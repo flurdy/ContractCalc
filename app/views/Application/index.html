@@ -1,4 +1,122 @@
 #{extends 'main.html' /}
 #{set title:'Home' /}
 
-#{welcome /}
+        <h1>Calculate contract rate</h1>
+        <p>
+            To work out a rough contracting rate
+            based on your existing permanent salary
+            and a few other factors.
+        </p>
+#{form @Application.calculate()}
+
+<fieldset>
+    <legend>Salary</legend>
+    <input type="text" name="salary" value="${flash['salary']?:10000}"/>
+    <p>How much would your earn as an employee.</p>
+</fieldset>
+<fieldset>
+    <legend>Cost</legend>
+    <input type="text" name="cost" value="${flash['cost']?:1.50}" />
+    <p>
+        How much do you actually cost your employer.
+        (Benefits, insurance, office space, admin, company tax, training, etc)
+        Some say another 30%, others 50%, 2x or even 3x your salary.
+        Or rather how much extra will contracting cost you.
+        (Commuting, hardware, insurance, no holidays, admin, sales, training cost, etc)
+        If you want to cut things to the bone, pick a number closer to 1.00.
+        I use 1.50.
+    </p>
+</fieldset>
+<fieldset>
+    <legend>Hours per year</legend>
+    <input type="text" name="hoursYear" value="${flash['hoursYear']?:1600}" />
+    <p>
+        How many actually hours will you work per year.
+        365 days per year and 5 working days per week is 260 days.
+        If 8 hours per day, the yearly hours is then 2080.
+        However you may work 7.5 or 7 hours per day.
+        You may want holidays or you may be sick.
+        You may want to take time off for training and conferences.
+        The actual average varies depending on country.
+        The US is actually closer to 2000,
+        the OECD average is around 1750,
+        while in Norway it is just under 1500.
+        With 8 bank holidays, 25 normal holidays, 5 days off sick,
+        and 7 days of training, I use 1600.
+    </p>
+</fieldset>
+<fieldset>
+    <legend>Hours per day</legend>
+    <input type="text" name="hoursDay" value="${flash['hoursDay']?:7.5}" />
+    <p>Not including lunch</p>
+</fieldset>
+<fieldset>
+    <legend>Utilisation</legend>
+    <input type="text" name="utilisation" value="${flash['utilisation']?:0.90}" />
+    <p>
+        How long a gap will you have between contracts.
+        It is difficult to finish one contract on the Friday
+        and always having another starting the following Monday.
+        Some bench time must be expected, 2 weeks here, a week there or worse.
+        I use 90% utilisation.
+    </p>
+</fieldset>
+<fieldset>
+    <legend>Tax difference</legend>
+    <input type="text" name="tax" value="${flash['tax']?:1.10}" />
+    <p>
+       As a contractor you might pay less tax personally 
+        compared to as a permanenet employee.
+        However in the UK, IR35 means <i>umbrella</i>  contractors
+        pay a little more than before.
+        (1.00 means no difference, 1.10 means 10% more)
+    </p>
+</fieldset>
+
+<br/>
+<br/>
+
+#{ifErrors}
+<div>
+    <p class="error">
+        There was a problem with your input, please correct:<br/>
+        ${errors[0]}
+    </p>
+</div>
+#{/ifErrors}
+
+            <button type="submit">Calculate</button>
+
+#{/form}
+<br/>
+
+#{if hourlyRate}
+        <table>
+            <tr>
+                <td colspan="2">((Salary * cost) / yearlyHours) * dailyHours * utilisation * tax</td>
+            </tr>
+            <tr>
+                <th>Hourly rate</th>
+                <td>${hourlyRate}</td>
+            </tr>
+            <tr>
+                <th>Daily rate</th>
+                <td>${dailyRate}</td>
+            </tr>
+            <tr>
+                <th>Year invoice</th>
+                <td>${yearIncome}</td>
+            </tr>
+        </table>
+#{/if}
+
+
+<p>
+        Any questions? <a href="http://flurdy.com/contact/">Contact me</a>.
+    Or <a href="http://www.eray.co.uk">hire me</a>.
+</p>
+<p>
+    For more information visit
+    <a href="http://www.contractorcalculator.co.uk/">ContractorCalculator</a> and
+    <a href="http://www.contractoruk.com/">ContractorUK</a>
+</p>        
