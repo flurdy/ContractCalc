@@ -8,6 +8,7 @@ import play.data.validation.Valid;
 import play.mvc.*;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.NumberFormat;
 import java.util.*;
 
@@ -37,7 +38,7 @@ public class Application extends Controller {
            validation.keep(); 
            index();
        }
-        BigDecimal calculation = salary.multiply(cost).divide(hoursYear)
+        BigDecimal calculation = salary.multiply(cost).divide(hoursYear, RoundingMode.HALF_UP)
                     .multiply(utilisation).multiply(tax);
         final NumberFormat numberFormat = NumberFormat.getInstance(Locale.UK);
         String hourlyRate = numberFormat.format(Math.round(calculation.doubleValue()));
