@@ -31,18 +31,17 @@
     <legend>Hours per year</legend>
     <input type="text" name="hoursYear" value="${flash['hoursYear']?:1600}" />
     <p>
-        How many actually hours will you work per year.
+        How many hours will you be available to work per year.
         365 days per year and 5 working days per week is 260 days.
-        If 8 hours per day, the yearly hours is then 2080.
-        However you may work 7.5 or 7 hours per day.
+        However you may work 8, 7.5 or 7 hours per day.
         You may want holidays or you may be sick.
         You may want to take time off for training and conferences.
         The actual average varies depending on country.
-        The US is actually closer to 2000,
+        The US is actually closer to 2000 hours,
         the OECD average is around 1750,
         while in Norway it is just under 1500.
         With 8 bank holidays, 25 normal holidays, 5 days off sick,
-        and 7 days of training, I use 1600.
+        and 7 days of training, I use 1600 hours.
     </p>
 </fieldset>
 <fieldset>
@@ -93,7 +92,7 @@
 #{if hourlyRate}
         <table>
             <tr>
-                <td colspan="2">((Salary * cost) / yearlyHours) * dailyHours * utilisation * tax</td>
+                <td colspan="2">(((Salary * cost) / yearlyHours) / utilisation) * dailyHours * tax</td>
             </tr>
             <tr>
                 <th>Hourly rate</th>

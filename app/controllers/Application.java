@@ -38,8 +38,10 @@ public class Application extends Controller {
            validation.keep(); 
            index();
        }
-        BigDecimal calculation = salary.multiply(cost).divide(hoursYear, RoundingMode.HALF_UP)
-                    .multiply(utilisation).multiply(tax);
+        BigDecimal calculation = salary.multiply(cost)
+                .divide(hoursYear, RoundingMode.HALF_UP)
+                .divide(utilisation, RoundingMode.HALF_UP)
+                .multiply(tax);
         final NumberFormat numberFormat = NumberFormat.getInstance(Locale.UK);
         String hourlyRate = numberFormat.format(Math.round(calculation.doubleValue()));
         BigDecimal dailyCalculation = new BigDecimal(hourlyRate).multiply(hoursDay);
