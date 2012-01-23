@@ -1,0 +1,194 @@
+#{extends 'main.html' /}
+#{set title:'Hours per year calculator' /}
+
+        <h1>Calculate invoiceable hours per year</h1>
+        <p>
+            To work out a roughly how many hours and days
+            will you actually be working as a contractor,
+            ie invoicable hours per year.
+        </p>
+
+<p>
+   A non leap year consist of 365 days across 52 weeks.
+   Take away weekends and you have a maximum of 260 days to invoice.
+</p>
+
+<table>
+    <tr>
+        <th colspan="4" title="Includes holidays">Optimistic</th>
+    </tr>
+    <tr>
+        <td colspan="4">Includes just public holidays</td>
+    </tr>
+    <tr>
+        <th>Hours</th>
+        <th>Days</th>
+        <th>Weeks</th>
+        <th>% of year</th>
+    </tr>
+    <tr>
+        <td>${optimisticHoursPerYear?:'?'}</td>
+        <td>${optimisticDaysPerYear?:'?'}</td>
+        <td>${optimisticWeeksPerYear?:'?'}</td>
+        <td>${optimisticPercentOfYear?:'?'}</td>
+    </tr>
+</table>
+<br/>
+<table>
+    <tr>
+        <th colspan="4" title="Includes training, admin and sick days">Realistic</th>
+    </tr>
+    <tr>
+        <td colspan="4">Includes holidays, training and admin</td>
+    </tr>
+    <tr>
+        <th>Hours</th>
+        <th>Days</th>
+        <th>Weeks</th>
+        <th>% of year</th>
+    </tr>
+    <tr>
+        <td>${realisticHoursPerYear?:'?'}</td>
+        <td>${realisticDaysPerYear?:'?'}</td>
+        <td>${realisticWeeksPerYear?:'?'}</td>
+        <td>${realisticPercentOfYear?:'?'}</td>
+    </tr>
+</table>
+<br/>
+<table>
+    <tr>
+        <th colspan="4" title="Includes lost utilisation">Pessimistic</th>
+    </tr>
+    <tr>
+        <td colspan="4">Includes sick days and lost utilisation</td>
+    </tr>
+    <tr>
+        <th>Hours</th>
+        <th>Days</th>
+        <th>Weeks</th>
+        <th>% of year</th>
+    </tr>
+    <tr>
+        <td>${pessimisticHoursPerYear?:'?'}</td>
+        <td>${pessimisticDaysPerYear?:'?'}</td>
+        <td>${pessimisticWeeksPerYear?:'?'}</td>
+        <td>${pessimisticPercentOfYear?:'?'}</td>
+    </tr>
+</table>
+
+<br/>
+<br/>
+
+#{ifErrors}
+<div>
+    <p class="error">
+        There was a problem with your input, please correct:<br/>
+        ${errors[0]}
+    </p>
+</div>
+<br/>
+<br/>
+#{/ifErrors}
+
+#{form @Application.calculateHoursPerYear()}
+
+<fieldset>
+    <legend>Hour per day</legend>
+    <input type="text" name="hoursPerDay" value="${flash['hoursPerDay']?:7.5}"/>
+    <p>
+        How many hours would you work and invoice for per day.
+        Not including lunch.
+    </p>
+</fieldset>
+
+<fieldset>
+    <legend>Holidays</legend>
+    <input type="text" name="holidays" value="${flash['holidays']?:20}" />
+    <p>
+        How many days per yer (5 days = 1 week) will you take as holiday?    <br/>
+        Default: 4 weeks = 20 days.
+    </p>
+</fieldset>
+
+<fieldset>
+    <legend>Public Holidays</legend>
+    <input type="text" name="bankHolidays" value="${flash['bankHolidays']?:9}" />
+    <p>
+        How many days per year will you forced to take as holiday due to
+        <a href="http://en.wikipedia.org/wiki/List_of_holidays_by_country">public/bank holiday</a>?   <br/>
+        Default: 9 days.
+    </p>
+</fieldset>
+
+<fieldset>
+    <legend>Sick days</legend>
+    <input type="text" name="sickDays" value="${flash['sickDays']?:5}" />
+    <p>
+        In a bad year how many days were you off sick?
+        How many times was your kids sick and you had to take the day off work (if applicable) etc.    <br/>
+        Default: 5 days.
+    </p>
+</fieldset>
+
+<fieldset>
+    <legend>Training days & conferences</legend>
+    <input type="text" name="trainingDays" value="${flash['trainingDays']?:5}" />
+    <p>
+        How many days will you spend on training courses etc?
+        1 week's course per year? 2 days conferences?                        <br/>
+        Default: 1 week = 5 days.
+    </p>
+</fieldset>
+
+<fieldset>
+    <legend>Admin &amp; sales</legend>
+    <input type="text" name="adminDays" value="${flash['adminDays']?:5}" />
+    <p>
+        You might be able to do most of your admin (accounting, invoicing, legal, etc)
+        in hours outside of your invoice hours.
+        Keep in mind you are then working more than you planned,
+        so you might prefer to do that in your regular working hours
+        thus non-invoiceable time.
+     </p>
+    <p>
+        You will also need to allocate some time to find the next contract,
+        for interviews, keep previous clients happy etc.           <br/>
+        Default: 1 week = 5 days.
+    </p>
+</fieldset>
+
+<fieldset>
+    <legend>Utilisation lost</legend>
+    <input type="text" name="benchDays" value="${flash['benchDays']?:15}" />
+    <p>
+        How many days do expect to be on "the bench"?
+        As how many days will you be without a contract per year.
+        Not every contract finish and start perfectly align.
+        Also some times there can be longer gaps due to market reasons,
+        or down periods in the year (summer, December).
+    </p>                                                      <br/>
+    Default: 3 weeks = 15 days.
+</fieldset>
+
+
+<br/>
+<br/>
+
+            <button type="submit">Calculate</button>
+
+#{/form}
+<br/>
+
+<p>
+    <a href="@{Application.index}">Calculate contract rate</a>
+</p>
+
+<p>
+        Any questions? <a href="http://flurdy.com/contact/">Contact me</a>.
+    Or <a href="http://www.eray.co.uk">hire me</a>.
+</p>
+<p>
+    For more information visit
+    <a href="http://www.contractorcalculator.co.uk/">ContractorCalculator</a> and
+    <a href="http://www.contractoruk.com/">ContractorUK</a>
+</p>        

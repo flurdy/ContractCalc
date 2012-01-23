@@ -1,0 +1,143 @@
+#{extends 'main.html' /}
+#{set title:'Calculate contract rate' /}
+
+        <h1>Calculate contract rate</h1>
+        <p>
+            To work out a rough contracting rate
+            based on your existing permanent salary
+            and a few other factors.
+        </p>
+<br/>
+
+#{ifErrors}
+<div>
+    <p class="error">
+        There was a problem with your input, please correct:<br/>
+        ${errors[0]}
+    </p>
+</div>
+        <br/>
+#{/ifErrors}
+
+#{if hourlyRate}
+<table>
+    <tr>
+        <td colspan="2">(((Salary * cost * tax) / yearlyHours) / utilisation) * dailyHours</td>
+    </tr>
+    <tr>
+        <th>Hourly rate</th>
+        <td>${hourlyRate}</td>
+    </tr>
+    <tr>
+        <th>Daily rate</th>
+        <td>${dailyRate}</td>
+    </tr>
+    <tr>
+        <th>Year invoice</th>
+        <td>${yearIncome}</td>
+    </tr>
+</table>
+<br/>
+#{/if}
+<br/>
+#{form @Application.calculateRate()}
+
+<fieldset>
+    <legend>Salary</legend>
+    <input type="text" name="salary" value="${flash['salary']?:50000}"/>
+    <p>How much would your earn as an employee per year before tax (currency irrelevant).</p>
+</fieldset>
+<fieldset>
+    <legend>Hours per year</legend>
+    <input type="text" name="hoursYear" value="${flash['hoursYear']?:1600}" />
+    <p>
+        <a href="@{Application.hoursPerYear}">How many hours will you be available to work per year</a>(invoice).
+        365 days per year and 5 working days per week is 260 days.
+        However you may work 8, 7.5 or 7 hours per day.
+        You may want holidays or you may be sick.
+        You may want to take time off for training and conferences.
+        The actual average varies depending on country.
+        The US is actually closer to 2000 hours,
+        <a href="">the OECD</a> average is around 1750,
+        while in Norway it is just under 1500.
+        With 8 bank holidays, 25 normal holidays, 5 days off sick,
+        and 7 days of training, I use 1600 hours.
+    </p>
+</fieldset>
+<fieldset>
+    <legend>Hours per day</legend>
+    <input type="text" name="hoursDay" value="${flash['hoursDay']?:7.5}" />
+    <p>Not including lunch. I use 7.5 per day.</p>
+</fieldset>
+<fieldset>
+    <legend>Additional cost</legend>
+    <input type="text" name="cost" value="${flash['cost']?:1.20}" />
+    <p>
+        1.00 is no additional cost. 1.1 means 10% additional costs.  I use 1.50.
+    </p>
+    <p>
+        If you are looking for how much you can earn in relation to your current salary,
+        then enter your estimated additional cost to the employer.
+    </p>
+    <p>
+        The employee's salary is not the employers only cost per employee.
+        The company also have to pay for your benefits,
+        insurance, tax, office space, utilities,
+        admin staff, training, hardware, licenses, liabilities, etc.
+        This can be as low as additional 30% cost per employee,
+        however in some countries and companies this can be 2x or 3x the salary.
+    </p>
+    <p>
+        However if you are looking for what you need to charge for equivalent salary,
+        then you need to enter your estimated additional costs as a contractor.
+    </p>
+    <p>
+       As a self employed contractor you have to pay for your
+        pension, insurance, accountants, PCs, mobiles, tools, training, conferences, commuting cost,
+        non-invoiceable time for admin &amp; sales, etc.
+        If you want to cut things to the bone, pick a number closer to 1.00.
+    </p>
+</fieldset>
+<fieldset>
+    <legend>Utilisation</legend>
+    <input type="text" name="utilisation" value="${flash['utilisation']?:0.90}" />
+    <p>
+        How long a gap will you have between contracts.
+        It is difficult to finish one contract on the Friday
+        and always having another starting the following Monday.
+        Some bench time must be expected, 2 weeks here, a week there or worse.
+        I use 90% utilisation.
+    </p>
+</fieldset>
+<fieldset>
+    <legend>Tax difference</legend>
+    <input type="text" name="tax" value="${flash['tax']?:1.10}" />
+    <p>
+       As a contractor you might pay less tax personally
+        compared to as a permanent employee.
+        However in the UK, IR35 means <i>umbrella</i>  contractors
+        pay a little more than before.
+        (1.00 means no difference, 1.10 means 10% more)
+    </p>
+</fieldset>
+
+<br/>
+<br/>
+
+
+            <button type="submit">Calculate</button>
+
+#{/form}
+<br/>
+
+
+
+<p>
+        Any questions? <a href="http://flurdy.com/contact/">Contact me</a>.
+    Or <a href="http://www.eray.co.uk">hire me</a>.
+</p>
+<p>
+    For more information visit
+    <a href="http://www.contractorcalculator.co.uk/">ContractorCalculator</a> and
+    <a href="http://www.contractoruk.com/">ContractorUK</a>
+</p>        

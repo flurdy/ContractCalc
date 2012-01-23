@@ -11,5 +11,19 @@ GET     /favicon.ico                            404
 # Map static resources from the /app/public folder to the /public path
 GET     /public/                                staticDir:public
 
+
+
+
+
+GET     /calculator.html                        Application.enterRate
+GET     /calculateRate                        Application.rateRedirect
+POST     /calculateRate                       Application.calculateRate
+
+GET     /hoursPerYear.html                    Application.hoursPerYear
+GET     /calculateHoursPerYear                Application.hoursPerYearRedirect
+POST     /calculateHoursPerYear               Application.calculateHoursPerYear
+
+
+
 # Catch all
 *       /{controller}/{action}                  {controller}.{action}

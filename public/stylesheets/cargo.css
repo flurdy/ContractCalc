@@ -1,0 +1,112 @@
+/* ### css by flurdy . Copyright: electric ray 2004, www.eray.co.uk ### */
+
+/* div{ padding: 0px; margin: 0px; } */
+body{ color: black; }
+a,a:visited{ color: black; }
+#bow{
+	font-size: 1.5em;
+	font-weight: bold;
+	text-align: center;
+	margin: 0px;
+	padding: 0px 70px;
+}
+#lookout {
+    padding: 0px 1em;
+}
+#lookout ul{
+	margin: 8px 0px 0px 0px;
+	padding: 0px;
+	/* float: left; */
+}
+#lookout ul li{
+	margin: 1px 0px;
+	padding: 1px;
+	list-style: none;
+	display: inline;
+}
+#lookout ul li a{
+	width: 60px;
+	text-decoration: none;
+	font-size: 12pt;
+	font-weight: bold;	
+	color: black;
+	padding: 2px 3em;
+	margin: 0px;
+/*	border: 1px outset silver; */
+/*	background-color: #0053cf; */
+}
+#lookout ul li a:visited{
+	color: black;
+}
+#lookout ul li a:hover{
+	color: black;
+	text-decoration: underline;
+}
+#lookout ul li a:active{
+	color: black;
+	text-decoration: underline;
+}
+#stern { padding: 0.2em 1.5em; margin: 0px; overflow: hidden; }
+#stern p{
+	margin: 0px;
+	padding: 0px;
+	text-align: center;
+	font-size: 7pt;
+	color: white; 
+}
+
+#stern #flurdy{
+	float: left;
+	height: 8px;
+	margin: 0px;
+	padding: 0px;
+}
+#stern #flurdy a{
+	margin: 0px;
+	padding: 0px;
+}
+#stern #flurdy img{
+	margin: 0px;
+	padding: 0px;
+	height: 0.9em;
+}
+
+/* #cargo h1{ font-size: 22pt; font-weight: bold; }
+#cargo h2{ font-size: 12pt; font-weight: bold; }
+#cargo h3{ font-size: 12pt; font-weight: bold; }
+#cargo h4{ font-size: 11pt; font-weight: bold; }
+#cargo h5{ font-size: 9pt; font-weight: bold; }
+#cargo h6{ font-size: 7pt; font-weight: bold; }
+#cargo p{ font-size: 9pt; font-weight: normal; }
+#cargo h3 p{ font-size: 12pt; font-weight: bold; }
+#cargo h4 p{ font-size: 11pt; font-weight: bold; }
+#cargo h5 p{ font-size: 9pt; font-weight: normal; }
+#cargo h6 p{ font-size: 7pt; font-weight: normal; }
+#cargo li{ font-size: 9pt; font-weight: normal; }     */
+#cargo th{
+	/* font-size: 10pt; font-weight: bold; */
+	text-align: left;
+	margin: 0px; padding: 2px 5px;
+}
+#cargo td{
+	/* font-size: 9pt; font-weight: normal;     */
+	text-align: left;
+	margin: 0px; padding: 2px 5px;
+}
+/*
+#cargo h1{ margin: 30px 5px; padding: 5px; }
+#cargo h2{ margin: 5px 5px; padding: 5px; }
+#cargo h3{ margin: 5px 5px; padding: 5px; }
+#cargo h4{ margin: 3px 3px; padding: 5px; }
+#cargo h5{ margin: 1px; padding: 3px; }
+#cargo h6{ margin: 1px; padding: 1px; }
+#cargo p{ margin: 5px; padding: 3px; }
+#cargo h5 p{ margin: 1px; padding: 1px; }
+#cargo h6 p{ margin: 1px; padding: 1px; }
+*/
+#cargo input{ background-color: #eee; }
+#cargo .smaller{ font-size: 7pt; }
+#cargo .error{ color: red; }
+
+
+#cargo th, #cargo td { border: 1px dashed silver; }
