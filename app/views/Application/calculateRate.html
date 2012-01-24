@@ -44,36 +44,33 @@
 
 <fieldset>
     <legend>Salary</legend>
-    <input type="text" name="salary" value="${flash['salary']?:50000}"/>
-    <p>How much would your earn as an employee per year before tax (currency irrelevant).</p>
+    <input type="text" name="contractingRate.salary" value="${flash['contractingRate.salary']?:50000}" maxlength="12" size="8"/>
+    <label>(currency irrelevant)</label>
+    <p>How much would your earn as an employee per year before tax.</p>
 </fieldset>
 <fieldset>
     <legend>Hours per year</legend>
-    <input type="text" name="hoursYear" value="${flash['hoursYear']?:1600}" />
+    <input type="text" name="contractingRate.hoursYear" value="${flash['contractingRate.hoursYear']?:1600}" maxlength="5" size="4" />
+    <label>hours%</label>
     <p>
-        <a href="@{Application.hoursPerYear}">How many hours will you be available to work per year</a>(invoice).
-        365 days per year and 5 working days per week is 260 days.
-        However you may work 8, 7.5 or 7 hours per day.
+        <a href="@{Application.hoursPerYear}">How many hours will you be available to work per year</a>(invoice).   <br/>
+        E.g. 8 hours per day for a max of 260 days.
         You may want holidays or you may be sick.
         You may want to take time off for training and conferences.
-        The actual average varies depending on country.
-        The US is actually closer to 2000 hours,
-        <a href="">the OECD</a> average is around 1750,
-        while in Norway it is just under 1500.
-        With 8 bank holidays, 25 normal holidays, 5 days off sick,
-        and 7 days of training, I use 1600 hours.
     </p>
 </fieldset>
 <fieldset>
     <legend>Hours per day</legend>
-    <input type="text" name="hoursDay" value="${flash['hoursDay']?:7.5}" />
+    <input type="text" name="contractingRate.hoursDay" value="${flash['contractingRate.hoursDay']?:7.5}" maxlength="3" size="4" />
+    <label>hours</label>
     <p>Not including lunch. I use 7.5 per day.</p>
 </fieldset>
 <fieldset>
     <legend>Additional cost</legend>
-    <input type="text" name="cost" value="${flash['cost']?:1.20}" />
+    <input type="text" name="contractingRate.cost" value="${flash['contractingRate.cost']?:50}" maxlength="3" size="4" />
+    <label>%</label>
     <p>
-        1.00 is no additional cost. 1.1 means 10% additional costs.  I use 1.50.
+        0 indicates no additional cost. 10 means 10% additional costs. Default: 50%.
     </p>
     <p>
         If you are looking for how much you can earn in relation to your current salary,
@@ -89,35 +86,37 @@
     </p>
     <p>
         However if you are looking for what you need to charge for equivalent salary,
-        then you need to enter your estimated additional costs as a contractor.
+        then you need to enter your estimated additional costs as a contractor instead.
     </p>
     <p>
        As a self employed contractor you have to pay for your
         pension, insurance, accountants, PCs, mobiles, tools, training, conferences, commuting cost,
         non-invoiceable time for admin &amp; sales, etc.
-        If you want to cut things to the bone, pick a number closer to 1.00.
+        If you want to cut things to the bone, pick a percentage closer to 0.
     </p>
 </fieldset>
 <fieldset>
     <legend>Utilisation</legend>
-    <input type="text" name="utilisation" value="${flash['utilisation']?:0.90}" />
+    <input type="text" name="contractingRate.utilisation" value="${flash['contractingRate.utilisation']?:90}" maxlength="3" size="4" />
+    <label>%</label>
     <p>
+        100 indicates full utilisation. Default: 90% utilisation.<br/>
         How long a gap will you have between contracts.
         It is difficult to finish one contract on the Friday
         and always having another starting the following Monday.
         Some bench time must be expected, 2 weeks here, a week there or worse.
-        I use 90% utilisation.
     </p>
 </fieldset>
 <fieldset>
     <legend>Tax difference</legend>
-    <input type="text" name="tax" value="${flash['tax']?:1.10}" />
+    <input type="text" name="contractingRate.tax" value="${flash['contractingRate.tax']?:10}" maxlength="3" size="4" />
+    <label>%</label>
     <p>
+        0 means no difference, 10 means 10% more tax. -20 means 20% less tax. Default: 10%. <br/>
        As a contractor you might pay less tax personally
         compared to as a permanent employee.
         However in the UK, IR35 means <i>umbrella</i>  contractors
         pay a little more than before.
-        (1.00 means no difference, 1.10 means 10% more)
     </p>
 </fieldset>
 

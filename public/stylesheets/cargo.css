@@ -9,6 +9,7 @@ a,a:visited{ color: black; }
 	text-align: center;
 	margin: 0px;
 	padding: 0px 70px;
+	white-space: nowrap;
 }
 #lookout {
     padding: 0px 1em;
