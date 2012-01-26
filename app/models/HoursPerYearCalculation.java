@@ -79,11 +79,11 @@ public class HoursPerYearCalculation {
         return calculateWorkHours(calculateWorkDaysWithoutBankHolidays()) ;
     }
 
-    public BigDecimal calculateWorkHoursWithoutBankHolidaysWithoutBankHolidaysNorHolidaysNorTrainingNorAdmin() {
+    public BigDecimal calculateWorkHoursWithoutBankHolidaysNorHolidaysNorTrainingNorAdmin() {
         return calculateWorkHours(calculateWorkDaysWithoutBankHolidaysNorHolidaysNorTrainingNorAdmin());
     }
 
-    public BigDecimal calculateWorkHoursWithoutBankHolidaysWithoutBankHolidaysNorHolidaysNorTrainingNorAdminNorSicWithBench() {
+    public BigDecimal calculateWorkHoursWithoutBankHolidaysNorHolidaysNorTrainingNorAdminNorSicWithBench() {
         return calculateWorkHours(calculateWorkDaysWithoutBankHolidaysNorHolidaysNorTrainingNorAdminNorSicWithBench());
     }
 
@@ -92,7 +92,7 @@ public class HoursPerYearCalculation {
     }
 
     public int calculateWorkWeeksWithoutBankHolidaysNorHolidaysNorTrainingNorAdmin() {
-        return calculateWorkDaysWithoutBankHolidaysNorHolidaysNorTrainingNorAdminNorSicWithBench() / 5;
+        return calculateWorkDaysWithoutBankHolidaysNorHolidaysNorTrainingNorAdmin() / 5;
     }
 
     public int calculateWorkWeeksWithoutBankHolidaysNorHolidaysNorTrainingNorAdminNoSicWithBench() {

@@ -74,13 +74,13 @@ public class Application extends Controller {
         final BigDecimal optimisticPercentOfYear = hoursPerYearCalculation.calculateYearlyPercentageWithoutBankHolidays();
 
         final int realisticDaysPerYear = hoursPerYearCalculation.calculateWorkDaysWithoutBankHolidaysNorHolidaysNorTrainingNorAdmin();
-        final BigDecimal realisticHoursPerYear = hoursPerYearCalculation.calculateWorkHoursWithoutBankHolidaysWithoutBankHolidaysNorHolidaysNorTrainingNorAdmin();
+        final BigDecimal realisticHoursPerYear = hoursPerYearCalculation.calculateWorkHoursWithoutBankHolidaysNorHolidaysNorTrainingNorAdmin();
         final int realisticWeeksPerYear = hoursPerYearCalculation.calculateWorkWeeksWithoutBankHolidaysNorHolidaysNorTrainingNorAdmin();
         final BigDecimal realisticPercentOfYear =  hoursPerYearCalculation.calculateYearlyPercentageWithoutBankHolidaysNorHolidaysNorTrainingNorAdmin();
 
         int pessimisticDaysPerYear = hoursPerYearCalculation.calculateWorkDaysWithoutBankHolidaysNorHolidaysNorTrainingNorAdminNorSicWithBench();
 
-        final BigDecimal pessimisticHoursPerYear = hoursPerYearCalculation.calculateWorkHoursWithoutBankHolidaysWithoutBankHolidaysNorHolidaysNorTrainingNorAdminNorSicWithBench();
+        final BigDecimal pessimisticHoursPerYear = hoursPerYearCalculation.calculateWorkHoursWithoutBankHolidaysNorHolidaysNorTrainingNorAdminNorSicWithBench();
         final int pessimisticWeeksPerYear = hoursPerYearCalculation.calculateWorkWeeksWithoutBankHolidaysNorHolidaysNorTrainingNorAdminNoSicWithBench();
         final BigDecimal pessimisticPercentOfYear =  hoursPerYearCalculation.calculateYearlyPercentageWithoutBankHolidaysNorHolidaysNorTrainingNorAdminNoSicWithBench();
 
