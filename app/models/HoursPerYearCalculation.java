@@ -36,22 +36,6 @@ public class HoursPerYearCalculation {
     @Min(0) @Max(260)
     public Integer benchDays;
 
-
-    /*
-    public HoursPerYearCalculation(BigDecimal hoursPerDay, Integer holidays,
-                                   Integer bankHolidays, Integer trainingDays,
-                                   Integer adminDays, Integer sickDays,
-                                   Integer benchDays) {
-        this.hoursPerDay = hoursPerDay;
-        this.holidays = holidays;
-        this.bankHolidays = bankHolidays;
-        this.trainingDays = trainingDays;
-        this.adminDays = adminDays;
-        this.sickDays = sickDays;
-        this.benchDays = benchDays;
-    }
-    */
-
     public int calculateWorkDaysWithoutBankHolidays() {
         return WORKDAYS_PER_YEAR - bankHolidays;
     }

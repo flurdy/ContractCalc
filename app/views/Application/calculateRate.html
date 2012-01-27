@@ -1,7 +1,7 @@
 #{extends 'main.html' /}
-#{set title:'Calculate contract rate' /}
+#{set title:'Contract rate' /}
 
-        <h1>Calculate contract rate</h1>
+        <!-- <h1>Calculate contract rate</h1> -->
         <p>
             To work out a rough contracting rate
             based on your existing permanent salary
@@ -51,7 +51,7 @@
 <fieldset>
     <legend>Hours per year</legend>
     <input type="text" name="contractingRate.hoursYear" value="${flash['contractingRate.hoursYear']?:1600}" maxlength="5" size="4" />
-    <label>hours%</label>
+    <label>hours</label>
     <p>
         <a href="@{Application.hoursPerYear}">How many hours will you be available to work per year</a>(invoice).   <br/>
         E.g. 8 hours per day for a max of 260 days.
@@ -131,7 +131,3 @@
 
 
 
-<p>
-        Any questions? <a href="http://flurdy.com/contact/">Contact me</a>.
-    Or <a href="http://www.eray.co.uk">hire me</a>.
-</p>

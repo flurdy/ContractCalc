@@ -37,8 +37,8 @@ body {  background-color: #666;  }
 body {  }
 #ocean { margin-left: 3em; }
 #fleet { padding: 0.8em 0em; }
-#ballast { min-width: 40em; max-width: 50em; padding: 0.3em 0.5em 0.5em 0.5em; min-height: 14em;  }
-#bow { height: 90px;}
+#ballast { min-width: 40em; max-width: 50em; padding: 0.6em 1.5em 0.5em 2.5em; min-height: 30em;  }
+#bow { height: 4em;}
 #lookout { height: 32px;  padding: 0; margin: 0; }
 #stern { height: 14px; }
 

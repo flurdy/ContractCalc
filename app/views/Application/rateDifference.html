@@ -1,0 +1,131 @@
+#{extends 'main.html' /}
+#{set title:'Rate difference' /}
+
+
+<h2>Calculate rate difference</h2>
+
+
+<p>
+    How much does actually an extra 25 per day mean,
+    how does that change my annual revenue/income?
+    Will a three weeks delay negate the difference?
+</p>
+
+<p>
+       Assuming 100% utilisation upon contract start for 12 months (rate 1).
+</p>
+
+
+<br/>
+
+<table>
+    <tr>
+        <th colspan="5">Estimated annual revenue</th>
+    </tr>
+    <tr>
+        <th>Time period</th>
+        <th>Rate 1</th>
+        <th>Rate 2</th>
+        <th>Difference</th>
+        <th>Notes</th>
+    </tr>
+    <tr>
+        <th>Per year</th>
+        <td>${annualRate1?:'?'}</td>
+        <td>${annualRate2?:'?'}</td>
+        <td>${annualRateDifference?:'?'}</td>
+        <td></td>
+    </tr>
+    <tr>
+        <th>Per month</th>
+        <td>${monthRate1?:'?'}</td>
+        <td>${monthRate2?:'?'}</td>
+        <td>${monthRateDifference?:'?'}</td>
+        <td><i>Bench time ignored</i></td>
+    </tr>
+</table>
+
+<br/>
+#{ifErrors}
+<br/>
+<div>
+    <p class="error">
+        There was a problem with your input, please correct:<br/>
+        ${errors[0]}
+    </p>
+</div>
+<br/>
+<br/>
+#{/ifErrors}
+#{form @Application.calculateRateDifference()}
+
+    <fieldset>
+        <legend>Hours per year</legend>
+        <input type="text" name="rateDifferenceCalculation.hoursPerYear" value="${flash['rateDifferenceCalculation.hoursPerYear']?:1600}" maxlength="5" size="4" />
+        <label>hours</label>
+        <p>
+            <a href="@{Application.hoursPerYear}">How many hours will you be available to invoice per year</a>?
+        </p>
+    </fieldset>
+
+    <fieldset>
+        <legend>Hour per day</legend>
+        <input type="text" name="rateDifferenceCalculation.hoursPerDay" value="${flash['rateDifferenceCalculation.hoursPerDay']?:7.5}"/>
+        <label>hours</label>
+        <p>
+            How many hours would you work and invoice for per day.
+            Not including lunch.
+        </p>
+    </fieldset>
+
+    <fieldset>
+        <legend>Rate 1</legend>
+        <input type="text" name="rateDifferenceCalculation.rate1" value="${flash['rateDifferenceCalculation.rate1']?:400}" maxlength="12" size="6" />
+        <label></label>
+        <p>
+
+        </p>
+    </fieldset>
+    <fieldset>
+        <legend>Rate 2</legend>
+        <input type="text" name="rateDifferenceCalculation.rate2" value="${flash['rateDifferenceCalculation.rate2']?:500}" maxlength="12" size="6" />
+        <label></label>
+        <p>
+
+        </p>
+    </fieldset>
+
+    <fieldset>
+        <legend>Rate time unit</legend>
+        <input type="radio" id="hourRateUnit" name="rateDifferenceCalculation.rateUnit" value="hour"
+            #{if flash['rateDifferenceCalculation.rateUnit'] && flash['rateDifferenceCalculation.rateUnit'] == 'hour'}checked="checked" #{/if}/>
+        <label for="hourRateUnit">per hour</label>
+        <input type="radio" id="dayRateUnit" name="rateDifferenceCalculation.rateUnit" value="day"
+            #{if !flash['rateDifferenceCalculation.rateUnit'] || flash['rateDifferenceCalculation.rateUnit'] == 'day'}checked="checked" #{/if}/>
+        <label for="dayRateUnit">per day</label>
+        <p>
+
+        </p>
+    </fieldset>
+
+    <fieldset>
+        <legend>Bench time</legend>
+        <input type="text" name="rateDifferenceCalculation.benchTime" value="${flash['rateDifferenceCalculation.benchTime']?:0}" maxlength="4" size="4" />
+        <label> days</label>
+        <p>
+            How many invoiceable days before contract for rate 2 starts?
+        </p>
+    </fieldset>
+
+<br/><br/>
+
+    <button>Calculate rate difference</button>
+
+#{/form}
+<br/><br/>
+
+
+
+<p>
+    <a href="@{Application.contact}">Any questions</a>?
+</p>

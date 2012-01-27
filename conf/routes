@@ -23,6 +23,13 @@ GET     /hoursPerYear.html                    Application.hoursPerYear
 GET     /calculateHoursPerYear                Application.hoursPerYearRedirect
 POST     /calculateHoursPerYear               Application.calculateHoursPerYear
 
+GET     /rateDifference.html                    Application.rateDifference
+GET     /calculateRateDifference                Application.rateDifferenceRedirect
+POST     /calculateRateDifference               Application.calculateRateDifference
+
+GET     /resources.html                    Application.resources
+GET     /contact.html                    Application.contact
+
 
 
 # Catch all

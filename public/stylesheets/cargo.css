@@ -4,13 +4,16 @@
 body{ color: black; }
 a,a:visited{ color: black; }
 #bow{
-	font-size: 1.5em;
 	font-weight: bold;
 	text-align: center;
+	background-color: white;
 	margin: 0px;
-	padding: 0px 70px;
+	padding: 0px;
 	white-space: nowrap;
 }
+#bow img { float: left; width: 5.5em; margin-left: -0em; margin-top: -1.25em; }
+#bow h1 { padding: 0 2em 0 0; }
+
 #lookout {
     padding: 0px 1em;
 }
@@ -31,7 +34,7 @@ a,a:visited{ color: black; }
 	font-size: 12pt;
 	font-weight: bold;	
 	color: black;
-	padding: 2px 3em;
+	padding: 0.1em 1em;
 	margin: 0px;
 /*	border: 1px outset silver; */
 /*	background-color: #0053cf; */
@@ -71,6 +74,9 @@ a,a:visited{ color: black; }
 	padding: 0px;
 	height: 0.9em;
 }
+
+#jib { text-align: center; }
+#jib h2 { text-align: center; }
 
 /* #cargo h1{ font-size: 22pt; font-weight: bold; }
 #cargo h2{ font-size: 12pt; font-weight: bold; }

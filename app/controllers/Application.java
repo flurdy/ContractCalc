@@ -1,14 +1,11 @@
 package controllers;
 
-import play.*;
-import play.data.validation.Max;
-import play.data.validation.Min;
+import play.Logger;
 import play.data.validation.Required;
 import play.data.validation.Valid;
 import play.mvc.*;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.text.NumberFormat;
 import java.util.*;
 
@@ -32,22 +29,6 @@ public class Application extends Controller {
     public static void contact(){
         render();
     }
-
-    public static void calculateRate(
-            @Required(message="Form missing") @Valid ContractingRate contractingRate
-    ){
-       if(validation.hasErrors()) {
-           params.flash();
-           validation.keep();
-           enterRate();
-       }
-        String hourlyRate = contractingRate.getHourlyRate();
-        String dailyRate = contractingRate.getDailyRate();
-        String yearIncome = contractingRate.getYearlyRateIncludingUtilisation();
-        params.flash();
-        render(hourlyRate,dailyRate,yearIncome);
-    }
-
     public static void hoursPerYear(){
         render();
     }
@@ -56,7 +37,34 @@ public class Application extends Controller {
         hoursPerYear();
     }
 
-   
+    public static void resources(){
+        render();
+    }
+
+    public static void rateDifference(){
+        render();
+    }
+
+    public static void rateDifferenceRedirect(){
+        rateDifference();
+    }
+
+
+    public static void calculateRate(
+            @Required(message="Form missing") @Valid ContractingRate contractingRate
+    ){
+        if(validation.hasErrors()) {
+            params.flash();
+            validation.keep();
+            enterRate();
+        }
+        String hourlyRate = contractingRate.getHourlyRate();
+        String dailyRate = contractingRate.getDailyRate();
+        String yearIncome = contractingRate.getYearlyRateIncludingUtilisation();
+        params.flash();
+        render(hourlyRate,dailyRate,yearIncome);
+    }
+
 
 
     public static void calculateHoursPerYear(
@@ -90,6 +98,31 @@ public class Application extends Controller {
                 realisticWeeksPerYear,realisticDaysPerYear,realisticHoursPerYear,
                 pessimisticWeeksPerYear,pessimisticDaysPerYear,pessimisticHoursPerYear,
                 optimisticPercentOfYear,realisticPercentOfYear,pessimisticPercentOfYear);
+    }
+
+
+
+    public static void calculateRateDifference(
+            @Required @Valid RateDifferenceCalculation rateDifferenceCalculation ){
+
+        if(validation.hasErrors()) {
+            params.flash();
+            validation.keep();
+            Logger.info("hPY" + rateDifferenceCalculation.hoursPerYear);
+            rateDifference();
+        }
+
+        String annualRate1 = rateDifferenceCalculation.getRate1Annually();
+        String annualRate2 = rateDifferenceCalculation.getRate2Annually();
+        String annualRateDifference = rateDifferenceCalculation.getRateAnnuallyDifference();
+        String monthRate1 = rateDifferenceCalculation.getRate1Monthly();
+        String monthRate2 = rateDifferenceCalculation.getRate2Monthy();
+        String monthRateDifference = rateDifferenceCalculation.getRateMonthlyDifference();
+
+        params.flash();
+        render("Application/rateDifference.html",
+                annualRate1, annualRate2, annualRateDifference,
+                monthRate1, monthRate2, monthRateDifference);
     }
 
 
