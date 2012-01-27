@@ -1,20 +1,23 @@
 /* ### css by flurdy . Copyright: electric ray 2004, www.eray.co.uk ### */
 /* borders */
 /* ship borders */
-#hull {
+#hull,
+#ama > .compartment > .ad {
 	/* border: 0.2em outset #222222; */
     border: 3px outset #333
 }
 
 /* rounding & shadows */
-#hull {
+#hull,
+#ama > .compartment > .ad {
 	border-radius: 20px;
 	-webkit-border-radius: 20px;
 	-moz-border-radius: 20px;
 }
 
 
-#hull {
+#hull,
+#ama > .compartment > .ad {
 	box-shadow: 10px 10px 15px -5px #333333;
 	-webkit-box-shadow: 10px 10px 15px -5px #333333;
 	-moz-box-shadow: 10px 10px 15px -5px #333333;
@@ -28,12 +31,16 @@
 
 /* colours */
 body {  background-color: #666;  }
-#hull { background-color: #fff;  }
+#hull,
+#ama > .compartment > .ad { background-color: #fff;  }
 #innerhull { background-color: #fff;  }
 
 /* dimensions   */
 .structure {  }
 .compartment { padding: 0.2em 0.5em; }
+#ama > .compartment > .ad {
+    padding: 0.8em; margin: 0 1em; min-height: 40em;
+}
 body {  }
 #ocean { margin-left: 3em; }
 #fleet { padding: 0.8em 0em; }
@@ -78,5 +85,5 @@ body {  }
 #cargo { }
 
 
-#starboard, #tug, #net, #ama, #hatch, #deck, #port,
+#starboard, #tug, #net, #hatch, #deck, #port,
 #foremast, #lighthouse, #buoy { display: none; }
