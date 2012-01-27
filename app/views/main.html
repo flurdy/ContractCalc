@@ -11,7 +11,7 @@
         <link rel="shortcut icon" type="image/png" href="@{'/public/images/favicon.png'}">
         <script src="@{'/public/javascripts/jquery-1.6.4.min.js'}" type="text/javascript" charset="${_response_encoding}"></script>
         #{get 'moreScripts' /}
-        #{if request.domain=='grid.flurdy.com'}#{include 'analytics.html'/}#{/if}
+        #{include 'Application/analytics.html'/}
     </head>
     <body>
 <div id="ocean" class="structure">
@@ -54,10 +54,10 @@
                 </div>
             </div>
         </div>
-        #{if request.domain=='grid.flurdy.com'}
+        #{if request.domain=='grid.flurdy.com'  }
         <div id="ama" class="structure">
             <div class="compartment">
-                <div class="ad">#{include 'adsense-skyscraper'/}</div>
+                <div class="ad">#{include 'Application/adsense-skyscraper.html'/}</div>
             </div>
         </div>
         #{/if}
