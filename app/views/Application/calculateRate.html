@@ -1,12 +1,12 @@
 #{extends 'main.html' /}
 #{set title:'Contract rate' /}
 
-        <!-- <h1>Calculate contract rate</h1> -->
-        <p>
-            To work out a rough contracting rate
-            based on your existing permanent salary
-            and a few other factors.
-        </p>
+<h3>Calculate contract rate</h3>
+<p>
+    To work out a rough contracting rate
+    based on your existing permanent salary
+    and a few other factors.
+</p>
 <br/>
 
 #{ifErrors}
@@ -38,8 +38,8 @@
     </tr>
 </table>
 <br/>
+<br/>0
 #{/if}
-<br/>
 #{form @Application.calculateRate()}
 
 <fieldset>
@@ -67,7 +67,7 @@
 </fieldset>
 <fieldset>
     <legend>Additional cost</legend>
-    <input type="text" name="contractingRate.cost" value="${flash['contractingRate.cost']?:50}" maxlength="3" size="4" />
+    <input type="text" name="contractingRate.cost" value="${flash['contractingRate.cost']?:30}" maxlength="3" size="4" />
     <label>%</label>
     <p>
         0 indicates no additional cost. 10 means 10% additional costs. Default: 50%.
