@@ -22,19 +22,19 @@
 #{if hourlyRate}
 <table>
     <tr>
-        <td colspan="2">(((Salary * cost * tax) / yearlyHours) / utilisation) * dailyHours</td>
-    </tr>
-    <tr>
         <th>Hourly rate</th>
         <td>${hourlyRate}</td>
+        <td colspan="1"><i>(((Salary * cost * tax) / yearlyHours) / utilisation) </i></td>
     </tr>
     <tr>
         <th>Daily rate</th>
         <td>${dailyRate}</td>
+        <td colspan="1"><i>dailyRate * dailyHours</i></td>
     </tr>
     <tr>
         <th>Year invoice</th>
         <td>${yearIncome}</td>
+        <td colspan="1"><i>dailyRate * yearlyHours</i></td>
     </tr>
 </table>
 <br/>
@@ -63,14 +63,14 @@
     <legend>Hours per day</legend>
     <input type="text" name="contractingRate.hoursDay" value="${flash['contractingRate.hoursDay']?:7.5}" maxlength="3" size="4" />
     <label>hours</label>
-    <p>Not including lunch. I use 7.5 per day.</p>
+    <p>Not including lunch.</p>
 </fieldset>
 <fieldset>
     <legend>Additional cost</legend>
     <input type="text" name="contractingRate.cost" value="${flash['contractingRate.cost']?:30}" maxlength="3" size="4" />
     <label>%</label>
     <p>
-        0 indicates no additional cost. 10 means 10% additional costs. Default: 50%.
+        0 indicates no additional cost. Default: 30% means 30% additional costs. 
     </p>
     <p>
         If you are looking for how much you can earn in relation to your current salary,
@@ -100,9 +100,11 @@
     <input type="text" name="contractingRate.utilisation" value="${flash['contractingRate.utilisation']?:90}" maxlength="3" size="4" />
     <label>%</label>
     <p>
-        100 indicates full utilisation. Default: 90% utilisation.<br/>
+        100% indicates full utilisation. Default: 90% utilisation.
+    </p>
+    <p>
         How long a gap will you have between contracts.
-        It is difficult to finish one contract on the Friday
+        It is difficult to finish one contract on a Friday
         and always having another starting the following Monday.
         Some bench time must be expected, 2 weeks here, a week there or worse.
     </p>
@@ -112,10 +114,13 @@
     <input type="text" name="contractingRate.tax" value="${flash['contractingRate.tax']?:10}" maxlength="3" size="4" />
     <label>%</label>
     <p>
-        0 means no difference, 10 means 10% more tax. -20 means 20% less tax. Default: 10%. <br/>
-       As a contractor you might pay less tax personally
-        compared to as a permanent employee.
-        However in the UK, IR35 means <i>umbrella</i>  contractors
+        0 means no difference, -20 means 20% less tax. Default: 10% means 10% more tax. 
+    </p>
+    <p>
+        As a contractor with your own limited company 
+        you might pay less tax personally
+        compared to a permanent employee.
+        However in the UK, <a href="http://en.wikipedia.org/wiki/IR35">IR35</a> means some <i>umbrella</i> contractors
         pay a little more than before.
     </p>
 </fieldset>
