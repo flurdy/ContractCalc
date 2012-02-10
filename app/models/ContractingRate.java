@@ -110,6 +110,7 @@ public class ContractingRate  {
         Logger.info("tax calc is " + calculation);
         calculation =  calculation.divide(hoursYear, RoundingMode.HALF_UP);
         Logger.info("year hours calc is " + calculation);
+        calculation =  decreaseByPercentage(calculation,utilisation);
         Logger.info("Rate is " + calculation);
         return calculation.setScale(0, RoundingMode.HALF_UP);
     }
@@ -140,12 +141,20 @@ public class ContractingRate  {
         return getNumberFormat().format(calculation.doubleValue());
     }
 
+    private static BigDecimal toPercentage(BigDecimal percentage){
+        return percentage.divide(new BigDecimal(100),5,RoundingMode.HALF_UP);
+    }
+
     private static BigDecimal adjustByPercentage(BigDecimal base, BigDecimal percentage){
-        return base.multiply(percentage.divide(new BigDecimal(100),5,RoundingMode.HALF_UP));
+        return base.multiply(toPercentage(percentage));
     }
 
     private static BigDecimal increaseByPercentage(BigDecimal base, BigDecimal percentage){
         return base.multiply(BigDecimal.ONE.add(percentage.divide(new BigDecimal(100),5,RoundingMode.HALF_UP)));
+    }
+
+    private static BigDecimal decreaseByPercentage(BigDecimal base, BigDecimal percentage){
+        return base.divide(toPercentage(percentage),RoundingMode.HALF_UP);
     }
 
     private NumberFormat getNumberFormat(){
