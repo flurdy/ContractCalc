@@ -19,7 +19,6 @@ public class BasicTest extends UnitTest {
                         .salary(new BigDecimal(50000))
                         .cost(new BigDecimal(20))
                         .hoursYear(new BigDecimal(1500))
-                        .hoursDay(new BigDecimal(8))
                         .utilisation(new BigDecimal(90))
                         .tax(new BigDecimal(10))
                         .build();

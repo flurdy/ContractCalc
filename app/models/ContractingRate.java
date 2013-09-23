@@ -19,27 +19,24 @@ public class ContractingRate  {
 
     @Required(message = "Salary required") @Min(1)
     public BigDecimal salary;
-    
+
     @Required(message = "Cost required")
     @Min(0) @Max(300)
     public  BigDecimal cost;
-    
+
     @Required(message = "Yearly hours required")
     @Min(1) @Max(2500)
     public BigDecimal hoursYear;
-    
-    @Required(message = "Daily hours required")
-    @Min(1) @Max(24)
-    public BigDecimal hoursDay;
-    
+
     @Required(message = "Utilisation required")
     @Min(0) @Max(100)
     public  BigDecimal utilisation;
-    
+
     @Required(message = "Tax required")
     @Min(-100) @Max(300)
     public BigDecimal tax;
 
+    public String dayOrHoursPerYearChoice;
 
     private BigDecimal contractRate;
 
@@ -47,7 +44,6 @@ public class ContractingRate  {
         BigDecimal salary;
         BigDecimal cost;
         BigDecimal hoursYear;
-        BigDecimal hoursDay;
         BigDecimal utilisation;
         BigDecimal tax;
         public  ContractingRateBuilder salary(BigDecimal salary){
@@ -60,10 +56,6 @@ public class ContractingRate  {
         }
         public ContractingRateBuilder hoursYear(BigDecimal hoursYear ){
             this.hoursYear = hoursYear;
-            return this;
-        }
-        public ContractingRateBuilder hoursDay(BigDecimal hoursDay){
-            this.hoursDay = hoursDay;
             return this;
         }
         public ContractingRateBuilder utilisation(BigDecimal utilisation){
@@ -80,11 +72,10 @@ public class ContractingRate  {
         }
     }
 
-    public ContractingRate(BigDecimal salary, BigDecimal cost, BigDecimal hoursYear, BigDecimal hoursDay, BigDecimal utilisation, BigDecimal tax) {
+    public ContractingRate(BigDecimal salary, BigDecimal cost, BigDecimal hoursYear,   BigDecimal utilisation, BigDecimal tax) {
         this.salary = salary;
         this.cost = cost;
         this.hoursYear = hoursYear;
-        this.hoursDay = hoursDay;
         this.utilisation = utilisation;
         this.tax = tax;
         this.contractRate = calculateRate();
@@ -94,67 +85,143 @@ public class ContractingRate  {
         this.salary = builder.salary;
         this.cost = builder.cost;
         this.hoursYear = builder.hoursYear;
-        this.hoursDay = builder.hoursDay;
         this.utilisation = builder.utilisation;
         this.tax = builder.tax;
         this.contractRate = calculateRate();
     }
 
     private BigDecimal calculateRate(){
-        Logger.info("Salary is " + salary);
-        Logger.info("cost is " + cost);
-        BigDecimal calculation =  increaseByPercentage(salary,cost);
-        Logger.info("cost calc is " + calculation);
-        Logger.info("tax is " + tax);
-        calculation =  increaseByPercentage(calculation,tax);
-        Logger.info("tax calc is " + calculation);
-        calculation =  calculation.divide(hoursYear, RoundingMode.HALF_UP);
-        Logger.info("year hours calc is " + calculation);
-        calculation =  decreaseByPercentage(calculation,utilisation);
-        Logger.info("Rate is " + calculation);
-        return calculation.setScale(0, RoundingMode.HALF_UP);
+            Logger.info("#################");
+        final BigDecimal annualRate = calculateAnnualTarget();
+        final BigDecimal reducedHours = reduceHourDueToUtilisation();
+        final BigDecimal rateByHoursPerYear =  annualRate.divide(reducedHours, RoundingMode.HALF_UP);
+            Logger.info("Rate per hour per year is " + rateByHoursPerYear);
+        final BigDecimal roundedRate = rateByHoursPerYear.setScale(0, RoundingMode.HALF_UP);
+            Logger.info("Rounded hourly rate is " + roundedRate);
+        return roundedRate;
     }
 
     public String getHourlyRate(){
-        if(contractRate==null){
-                contractRate = calculateRate();
-        }
-        Logger.info("hourly calc is " + contractRate.doubleValue());
-        return getNumberFormat().format(contractRate.doubleValue());
+        final BigDecimal hourlyRate = getContractRate();
+        Logger.info("hourly calc is " + hourlyRate.doubleValue());
+        return getNumberFormat().format(hourlyRate.doubleValue());
     }
 
-    public String getDailyRate(){
-        if(contractRate==null){
-            contractRate = calculateRate();
-        }
-        BigDecimal dailyCalculation = contractRate.multiply(hoursDay).setScale(0, RoundingMode.HALF_UP);
+    public String getDailyRate(int hoursPerDay){
+        return getDailyRate(new BigDecimal(hoursPerDay));
+    }
+
+    public String getDailyRate(BigDecimal hoursPerDay){
+        final BigDecimal dailyCalculation = calculateDailyRate(hoursPerDay);
         Logger.info("daily calc is " + dailyCalculation);
-        return getNumberFormat().format(dailyCalculation.doubleValue());
+
+        final BigDecimal rounded1 = dailyCalculation.setScale(0, RoundingMode.HALF_UP);
+        Logger.info("rounded1 is " + rounded1);
+        final BigDecimal rounded2 = rounded1.multiply(new BigDecimal(2));
+        Logger.info("rounded2 is " + rounded2);
+        final BigDecimal rounded3 = rounded2.setScale(-1, RoundingMode.HALF_UP);
+        Logger.info("rounded3 is " + rounded3);
+        final BigDecimal rounded35 = rounded3.setScale(0, RoundingMode.HALF_UP);
+        Logger.info("rounded35 is " + rounded35);
+        final BigDecimal rounded4 = rounded35.divide(new BigDecimal(2), RoundingMode.HALF_UP);
+        Logger.info("rounded4 is " + rounded4);
+        final BigDecimal rounded5 = rounded4.setScale(0, RoundingMode.HALF_UP);
+        Logger.info("rounded5 is " + rounded5);
+
+        return getNumberFormat().format(rounded5.doubleValue());
     }
 
-    public String getYearlyRateIncludingUtilisation(){
+    public String getYearlyIncome(){
+        if( utilisation.equals(BigDecimal.ZERO)) {
+            return "0";
+        } else {
+            final BigDecimal calculation = calculateAnnualTarget();
+            final BigDecimal reduced = reduceDueToUtilisation(calculation);
+            final BigDecimal rounded = reduced.setScale(-2, RoundingMode.HALF_UP);
+            return getNumberFormat().format(rounded.doubleValue());
+        }
+    }
+
+    private BigDecimal getContractRate(){
         if(contractRate==null){
             contractRate = calculateRate();
         }
-        BigDecimal calculation = contractRate.multiply(hoursYear);
-        calculation = adjustByPercentage(calculation,utilisation);
-        return getNumberFormat().format(calculation.doubleValue());
+        return contractRate;
+    }
+
+    private BigDecimal calculateAnnualTarget(){
+//            Logger.info("Cost is " + cost);
+//            Logger.info("Tax is " + tax);
+            Logger.info("Salary is " + salary);
+        final BigDecimal costInflation =  increaseByPercentage(salary,cost);
+            Logger.info("Salary + cost is " + costInflation);
+        final BigDecimal taxInflation =  increaseByPercentage(costInflation,tax);
+            Logger.info("Salary + cost + tax is " + taxInflation);
+        return taxInflation;
+    }
+
+    public BigDecimal calculateDailyRate(BigDecimal hoursPerDay){
+        final BigDecimal annualRate = calculateAnnualTarget();
+//            Logger.info("annual rate is " + annualRate);
+        final BigDecimal reducedHours = reduceHourDueToUtilisation();
+            Logger.info("reducedHours is " + reducedHours);
+        final BigDecimal daysPerYear = reducedHours.divide(hoursPerDay, RoundingMode.HALF_UP);
+            Logger.info("daysPerYear is " + daysPerYear);
+        final BigDecimal dailyCalculation = annualRate.divide(daysPerYear, RoundingMode.HALF_UP);
+        // contractRate.multiply(hoursDay).setScale(0, RoundingMode.HALF_UP);
+            Logger.info("dailyCalculation is " + dailyCalculation);
+        final BigDecimal dailyRounded = dailyCalculation.setScale(0, RoundingMode.HALF_UP);
+         Logger.info("dailyRounded is " + dailyRounded);
+        return dailyRounded;
+    }
+
+    private BigDecimal reduceHourDueToUtilisation(){
+            Logger.info("hours was " + hoursYear);
+        return reduceDueToUtilisation(hoursYear);
+    }
+
+    private BigDecimal reduceDueToUtilisation(BigDecimal base){
+            Logger.info("Utilisation is " + utilisation);
+        final BigDecimal reduced = adjustByPercentage(base, utilisation);
+            Logger.info("utlisation reduce is " + reduced);
+        return reduced;
     }
 
     private static BigDecimal toPercentage(BigDecimal percentage){
-        return percentage.divide(new BigDecimal(100),5,RoundingMode.HALF_UP);
+        if( percentage.equals(BigDecimal.ZERO)) {
+            return BigDecimal.ZERO;
+        } else {
+            return percentage.divide(new BigDecimal(100),5,RoundingMode.HALF_UP);
+        }
     }
 
     private static BigDecimal adjustByPercentage(BigDecimal base, BigDecimal percentage){
-        return base.multiply(toPercentage(percentage));
+        if( percentage.equals(BigDecimal.ZERO)) {
+            return base;
+        } else {
+            Logger.info("percentage is "+percentage);
+            return base.multiply(toPercentage(percentage));
+        }
     }
 
     private static BigDecimal increaseByPercentage(BigDecimal base, BigDecimal percentage){
-        return base.multiply(BigDecimal.ONE.add(percentage.divide(new BigDecimal(100),5,RoundingMode.HALF_UP)));
+         if( percentage.equals(BigDecimal.ZERO)) {
+            return base;
+        } else {
+            return base.multiply(BigDecimal.ONE.add(percentage.divide(new BigDecimal(100),5,RoundingMode.HALF_UP)));
+        }
     }
 
     private static BigDecimal decreaseByPercentage(BigDecimal base, BigDecimal percentage){
-        return base.divide(toPercentage(percentage),RoundingMode.HALF_UP);
+        if( percentage.equals(BigDecimal.ZERO)) {
+           return base;
+        } else {
+           return base.divide(toPercentage(percentage),RoundingMode.HALF_UP);
+       }
+    }
+
+    private static BigDecimal invertByPercentage(BigDecimal percentage){
+        return new BigDecimal(100).subtract(percentage);
     }
 
     private NumberFormat getNumberFormat(){

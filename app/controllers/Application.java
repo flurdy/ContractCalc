@@ -57,19 +57,27 @@ public class Application extends Controller {
             params.flash();
             validation.keep();
             enterRate();
+        } else {
+            String hourlyRate = contractingRate.getHourlyRate();
+            Map<String,String> dailyRates = getDailyRates(contractingRate);
+            String yearIncome = contractingRate.getYearlyIncome();
+            params.flash();
+            render(hourlyRate,dailyRates,yearIncome);
         }
-        String hourlyRate = contractingRate.getHourlyRate();
-        String dailyRate = contractingRate.getDailyRate();
-        String yearIncome = contractingRate.getYearlyRateIncludingUtilisation();
-        params.flash();
-        render(hourlyRate,dailyRate,yearIncome);
     }
 
+    private static Map<String,String> getDailyRates(ContractingRate contractingRate){
+        final Map<String,String> dailyRates = new HashMap<String,String>();
+        dailyRates.put("7",contractingRate.getDailyRate(new BigDecimal(7)));
+        dailyRates.put("7.5",contractingRate.getDailyRate(new BigDecimal(7.5)));
+        dailyRates.put("8",contractingRate.getDailyRate(new BigDecimal(8)));
+        return dailyRates;
+    }
 
 
     public static void calculateHoursPerYear(
             @Required @Valid HoursPerYearCalculation hoursPerYearCalculation ){
-        
+
         if(validation.hasErrors()) {
             params.flash();
             validation.keep();

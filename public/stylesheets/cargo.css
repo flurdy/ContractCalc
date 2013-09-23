@@ -32,7 +32,7 @@ a,a:visited{ color: black; }
 	width: 60px;
 	text-decoration: none;
 	font-size: 12pt;
-	font-weight: bold;	
+	font-weight: bold;
 	color: black;
 	padding: 0.1em 1em;
 	margin: 0px;
@@ -56,7 +56,7 @@ a,a:visited{ color: black; }
 	padding: 0px;
 	text-align: center;
 	font-size: 7pt;
-	color: white; 
+	color: white;
 }
 
 #stern #flurdy{
@@ -117,3 +117,4 @@ a,a:visited{ color: black; }
 
 
 #cargo th, #cargo td { border: 1px dashed silver; }
+#cargo .righter { text-align: right;  }

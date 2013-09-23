@@ -23,18 +23,27 @@
 <table>
     <tr>
         <th>Hourly rate</th>
-        <td>${hourlyRate}</td>
+        <td colspan="2" class="righter">${hourlyRate}</td>
         <td colspan="1"><i>(((Salary * cost * tax) / yearlyHours) / utilisation) </i></td>
     </tr>
     <tr>
-        <th>Daily rate</th>
-        <td>${dailyRate}</td>
-        <td colspan="1"><i>hourlyRate * dailyHours</i></td>
+        <th>Year invoice</th>
+        <td colspan="2" class="righter">${yearIncome}</td>
+        <td colspan="1"><i>((Salary * cost * tax) / utilisation)</i></td>
     </tr>
     <tr>
-        <th>Year invoice</th>
-        <td>${yearIncome}</td>
-        <td colspan="1"><i>hourlyRate * yearlyHours</i></td>
+        <th rowspan="3">Daily rates</th>
+        <td class="righter">7 hours</td>
+        <td>${dailyRates.get("7")}</td>
+        <td colspan="1" rowspan="3"><i>hourlyRate * dailyHours</i></td>
+    </tr>
+    <tr>
+        <td class="righter">7.5 hours</td>
+        <td>${dailyRates.get("7.5")}</td>
+    </tr>
+    <tr>
+        <td class="righter">8 hours</td>
+        <td>${dailyRates.get("8")}</td>
     </tr>
 </table>
 <br/>
@@ -50,27 +59,40 @@
 </fieldset>
 <fieldset>
     <legend>Hours per year</legend>
-    <input type="text" name="contractingRate.hoursYear" value="${flash['contractingRate.hoursYear']?:1600}" maxlength="5" size="4" />
-    <label>hours</label>
+
+    <input type="text" id="hoursYear" name="contractingRate.hoursYear" value="${flash['contractingRate.hoursYear']?:1600}" maxlength="5" size="4" />
+    <label for="hoursYear">hours</label>
+
+    <br/>
+
     <p>
-        <a href="@{Application.hoursPerYear}">How many hours will you be available to work per year</a>(invoice).   <br/>
-        E.g. 8 hours per day for a max of 260 days.
-        You may want holidays or you may be sick.
+        <a href="@{Application.hoursPerYear}">Calculate how many hours will you be available to work/invoice per year</a>.
+        <br/>
+    </p>
+    <p>
+        For a normal fully booked year this is between 1400 to 2000 hours, or 200 to 260 days.
+    </p>
+    <p>
+        You need some holidays and you may be sick.
         You may want to take time off for training and conferences.
+        You will need time for administration and sales/interviews.
     </p>
 </fieldset>
-<fieldset>
+<!-- <fieldset>
     <legend>Hours per day</legend>
     <input type="text" name="contractingRate.hoursDay" value="${flash['contractingRate.hoursDay']?:7.5}" maxlength="3" size="4" />
     <label>hours</label>
-    <p>Not including lunch.</p>
-</fieldset>
+    <p>
+        Not including lunch
+        <i>(not used in calculation, only to assist in showing a daily rate)</i>.
+    </p>
+</fieldset> -->
 <fieldset>
     <legend>Additional cost</legend>
     <input type="text" name="contractingRate.cost" value="${flash['contractingRate.cost']?:30}" maxlength="3" size="4" />
     <label>%</label>
     <p>
-        0 indicates no additional cost. Default: 30% means 30% additional costs. 
+        0 indicates no additional cost. Default: 30% means 30% additional costs.
     </p>
     <p>
         If you are looking for how much you can earn in relation to your current salary,
@@ -114,10 +136,10 @@
     <input type="text" name="contractingRate.tax" value="${flash['contractingRate.tax']?:10}" maxlength="3" size="4" />
     <label>%</label>
     <p>
-        0 means no difference, -20 means 20% less tax. Default: 10% means 10% more tax. 
+        0 means no difference, -20 means 20% less tax. Default: 10% means 10% more tax.
     </p>
     <p>
-        As a contractor with your own limited company 
+        As a contractor with your own limited company
         you might pay less tax personally
         compared to a permanent employee.
         However in the UK, <a href="http://en.wikipedia.org/wiki/IR35">IR35</a> means some <i>umbrella</i> contractors
@@ -133,6 +155,22 @@
 
 #{/form}
 <br/>
+
+<script type="text/javascript">
+    $(function() {
+        $("#daysYearChoice").click( function(event){
+            if( $("#hoursOrDaysPerYear").val() > 366){
+                $("#hoursOrDaysPerYear").val(220);
+            }
+        });
+        $("#hoursYearChoice").click( function(event){
+            if( $("#hoursOrDaysPerYear").val() < 367){
+                $("#hoursOrDaysPerYear").val(1600);
+            }
+        });
+    });
+</script>
+
 
 
 
