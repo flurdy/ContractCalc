@@ -16,6 +16,7 @@ a,a:visited{ color: black; }
 
 #lookout {
     padding: 0px 1em;
+    min-width: 51em;
 }
 #lookout ul{
 	margin: 8px 0px 0px 0px;
@@ -118,3 +119,7 @@ a,a:visited{ color: black; }
 
 #cargo th, #cargo td { border: 1px dashed silver; }
 #cargo .righter { text-align: right;  }
+#cargo .income {
+	font-weight: normal;
+}
+

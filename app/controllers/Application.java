@@ -6,6 +6,7 @@ import play.data.validation.Valid;
 import play.mvc.*;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.NumberFormat;
 import java.util.*;
 
@@ -47,6 +48,15 @@ public class Application extends Controller {
 
     public static void rateDifferenceRedirect(){
         rateDifference();
+    }
+
+    public static void enterIncomeRate(){
+       render();
+    }
+
+
+    public static void showIncome(){
+        enterIncomeRate();
     }
 
 
@@ -133,5 +143,32 @@ public class Application extends Controller {
                 monthRate1, monthRate2, monthRateDifference);
     }
 
+
+    public static void calculateIncome(
+        @Required @Valid IncomeCalculation incomeCalculation ){
+
+        if(validation.hasErrors()) {
+            params.flash();
+            validation.keep();
+            enterIncomeRate();
+        } else {
+
+            incomeCalculation.calculateIncome();
+
+            params.flash();
+
+            final String grossIncome = incomeCalculation.getGrossIncome();
+            final String realisticIncome = incomeCalculation.getRealisticIncome();
+            final String comparableIncome = incomeCalculation.getComparableIncome();
+
+            final String grossRawIncome = incomeCalculation.getRawGrossIncome();
+            final String realisticRawIncome = incomeCalculation.getRawRealisticIncome();
+            final String comparableRawIncome = incomeCalculation.getRawComparableIncome();
+
+            render("Application/enterIncomeRate.html",
+                grossIncome, realisticIncome, comparableIncome,
+                grossRawIncome, realisticRawIncome, comparableRawIncome);
+        }
+    }
 
 }

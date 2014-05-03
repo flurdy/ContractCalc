@@ -15,8 +15,6 @@ import java.util.Locale;
 
 public class ContractingRate  {
 
-
-
     @Required(message = "Salary required") @Min(1)
     public BigDecimal salary;
 

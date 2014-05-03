@@ -17,15 +17,20 @@ GET     /public/                                staticDir:public
 
 GET     /calculator.html                        Application.enterRate
 GET     /calculateRate                        Application.rateRedirect
-POST     /calculateRate                       Application.calculateRate
+POST    /calculateRate                       Application.calculateRate
 
 GET     /hoursPerYear.html                    Application.hoursPerYear
 GET     /calculateHoursPerYear                Application.hoursPerYearRedirect
-POST     /calculateHoursPerYear               Application.calculateHoursPerYear
+POST    /calculateHoursPerYear               Application.calculateHoursPerYear
 
 GET     /rateDifference.html                    Application.rateDifference
 GET     /calculateRateDifference                Application.rateDifferenceRedirect
-POST     /calculateRateDifference               Application.calculateRateDifference
+POST    /calculateRateDifference               Application.calculateRateDifference
+
+GET	  /income/rate.html						Application.enterIncomeRate
+POST	  /income									Application.calculateIncome
+GET	  /income          						Application.showIncome
+
 
 GET     /resources.html                    Application.resources
 GET     /contact.html                    Application.contact

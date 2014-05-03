@@ -1,0 +1,163 @@
+#{extends 'main.html' /}
+#{set title:'Enter income rate' /}
+
+<h3>Calculate income based on desired rate</h3>
+<p>
+    To give an idea how much you could earn on a specific rate per year.
+</p>
+<p>
+     Includes other factors such as
+     invoicable units per year and realistic utilisation.
+</p>
+<p>
+		Also includes consideration for the increased costs of contracting when camparing with permanent salaries.
+</p>
+<br/>
+
+
+#{ifErrors}
+<div>
+    <p class="error">
+        There was a problem with your input, please correct:<br/>
+        ${errors[0]}
+    </p>
+</div>
+<br/>
+#{/ifErrors}
+
+
+#{if grossIncome || realisticIncome || comparableIncome}
+	<h4>Calculated income</h4>
+
+	<table>
+		<tbody>
+			<tr>
+				<th>Income</th>
+				<th>&nbsp;</th>
+			</tr>
+	#{if grossIncome}
+			<tr>
+				<td class="income">${grossIncome}</td>
+				<td>Gross maximum income</td>
+			</tr>
+	#{/if}
+	#{if realisticIncome}
+			<tr>
+				<td class="income">${realisticIncome}</td>
+				<td>Realistic income with reduced utilisation</td>
+			</tr>
+	#{/if}
+	#{if comparableIncome}
+			<tr>
+				<td class="income">${comparableIncome}</td>
+				<td>
+					Income which includes increased cost level.<br/>
+					This is comparable to permanent salaries not considering risk factor.
+				</td>
+			</tr>
+	#{/if}
+		</tbody>
+	</table>
+	<p>
+		Note these do not include tax etc.
+	</p>
+<br/>
+<br/>
+#{/if}
+
+
+#{form @Application.calculateIncome()}
+
+
+<fieldset>
+	<legend>Rate</legend>
+	<input type="text" name="incomeCalculation.rate" value="${flash['incomeCalculation.rate']?:400}" maxlength="12" size="6"/>
+	<label>(currency irrelevant)</label>
+	<p>
+		How much to charge for each hour or day
+	</p>
+</fieldset>
+
+<fieldset>
+	<legend>Rate length</legend>
+	<input type="radio" id="perday" name="incomeCalculation.ratelength" value="day"
+	#{if flash['incomeCalculation.ratelength']?:'day' == 'day'} checked #{/if} />
+	<label for="perday">Per day</label>
+
+	<input type="radio" id="perhour" name="incomeCalculation.ratelength" value="hour"
+	#{if flash['incomeCalculation.ratelength'] == 'hour'} checked #{/if} />
+	<label for="perhour">Per hour</label>
+	<p>
+		Charge by the day or by the hour?
+	</p>
+</fieldset>
+
+<fieldset>
+	<legend>Charge units per year</legend>
+	<input type="text" name="incomeCalculation.peryear" value="${flash['incomeCalculation.peryear']?:210}" maxlength="16" size="6"/>
+	<label>(days or hours)</label>
+	<p>
+		Hours or days worked and charged per year.
+        <a href="@{Application.hoursPerYear}">Calculate invoicable hours and days per year</a>.
+        <br/>
+    </p>
+    <p>
+        For a normal fully booked year this is between 1400 to 2000 hours, or 200 to 260 days.
+        <!-- <br/>
+        Note you will quite often not be booked perfectly for an entire year -->
+    </p>
+</fieldset>
+
+<fieldset>
+   <legend>Additional cost</legend>
+   <input type="text" name="incomeCalculation.cost" value="${flash['incomeCalculation.cost']?:30}" maxlength="3" size="4" />
+   <label>%</label>
+    <p>
+        0 indicates no additional cost. Default: 30% means 30% additional costs.
+    </p>
+    <p>
+    	Being self employed involves a lot of extra costs.
+    	(Insurance, pension, hardware, software, hosting, training, conferences, travel, accounting, invoice factoring, legal, office space, etc.)
+    </p>
+</fieldset>
+
+
+<fieldset>
+    <legend>Utilisation</legend>
+    <input type="text" name="incomeCalculation.utilisation" value="${flash['incomeCalculation.utilisation']?:90}" maxlength="3" size="4" />
+    <label>%</label>
+    <p>
+        100% indicates full utilisation. Default: 90% utilisation.
+    </p>
+    <p>
+        Some bench time must be expected between contracts.
+        2 weeks here, a few days there or worse..
+    </p>
+</fieldset>
+
+<!-- <fieldset>
+   <legend>Tax difference</legend>
+   <input type="text" name="incomeCalculation.tax" value="${flash['incomeCalculation.tax']?:-10}" maxlength="3" size="4" />
+   <label>%</label>
+	<p>
+        0 means no difference, 20 means 20% more tax. Default: -10% means 10% less tax.
+    </p>
+</fieldset> -->
+
+<br/>
+<br/>
+
+<button type="submit">Calculate income</button>
+
+#{/form}
+
+
+<br/>
+<br/>
+
+
+
+
+
+
+
