@@ -1,7 +1,7 @@
 #{extends 'main.html' /}
 #{set title:'Contract rate' /}
 
-<h3>Calculate contract rate</h3>
+<h3>Calculate contract rate based on desired income</h3>
 <p>
     To work out a rough contracting rate
     based on your existing permanent salary
@@ -24,18 +24,18 @@
     <tr>
         <th>Hourly rate</th>
         <td colspan="2" class="righter">${hourlyRate}</td>
-        <td colspan="1"><i>(((Salary * cost * tax) / yearlyHours) / utilisation) </i></td>
+        <td colspan="1"><i>((Salary * cost * tax) / yearlyHours) / utilisation</i></td>
     </tr>
     <tr>
         <th>Year invoice</th>
         <td colspan="2" class="righter">${yearIncome}</td>
-        <td colspan="1"><i>((Salary * cost * tax) / utilisation)</i></td>
+        <td colspan="1"><i>(Salary * cost * tax) / utilisation</i></td>
     </tr>
     <tr>
         <th rowspan="3">Daily rates</th>
         <td class="righter">7 hours</td>
         <td>${dailyRates.get("7")}</td>
-        <td colspan="1" rowspan="3"><i>hourlyRate * dailyHours (na&iuml;ve)</i></td>
+        <td colspan="1" rowspan="3" title="Very naive, normally you charge the same per day and increase per hour if shorter days instead"><i>hourlyRate * dailyHours (na&iuml;ve)</i></td>
     </tr>
     <tr>
         <td class="righter">7.5 hours</td>
@@ -101,19 +101,17 @@
     <p>
         The employee's salary is not the employers only cost per employee.
         The company also have to pay for your benefits,
-        insurance, tax, office space, utilities,
+        insurance, company tax, office space, utilities,
         admin staff, training, hardware, licenses, liabilities, etc.
         This can be as low as additional 30% cost per employee,
         however in some countries and companies this can be 2x or 3x the salary.
     </p>
     <p>
         However if you are looking for what you need to charge for equivalent salary,
-        then you need to enter your estimated additional costs as a contractor instead.
+        then you need to enter your estimated additional costs as a self employed contractor instead: pension, insurance, accountants, agents, invoice factoring, PCs, mobiles, tools, licenses, hosting, training, conferences, commuting cost,
+        non-invoiceable time for admin, support, sales &amp; interviews, etc.
     </p>
     <p>
-       As a self employed contractor you have to pay for your
-        pension, insurance, accountants, PCs, mobiles, tools, training, conferences, commuting cost,
-        non-invoiceable time for admin &amp; sales, etc.
         If you want to cut things to the bone, pick a percentage closer to 0.
     </p>
 </fieldset>
@@ -122,29 +120,68 @@
     <input type="text" name="contractingRate.utilisation" value="${flash['contractingRate.utilisation']?:90}" maxlength="3" size="4" />
     <label>%</label>
     <p>
-        100% indicates full utilisation. Default: 90% utilisation.
+        100% indicates full utilisation. Default: 90% utilisation, ie. you loose 10% of your income.
     </p>
     <p>
         How long a gap will you have between contracts.
         It is difficult to finish one contract on a Friday
         and always having another starting the following Monday.
-        Some bench time must be expected, 2 weeks here, a week there or worse.
+        Some bench time must be expected, 2 weeks here, a few days there or worse.
+    </p>
+    <p>
+        You might also have a contract suddenly terminated due to client finances or other factors.
     </p>
 </fieldset>
 <fieldset>
     <legend>Tax difference</legend>
-    <input type="text" name="contractingRate.tax" value="${flash['contractingRate.tax']?:10}" maxlength="3" size="4" />
+    <input type="text" name="contractingRate.tax" value="${flash['contractingRate.tax']?:0}" maxlength="3" size="4" />
     <label>%</label>
     <p>
-        0 means no difference, -20 means 20% less tax. Default: 10% means 10% more tax.
+        10 means 10% more tax, -20 means 20% less tax, ie earn 20% more. Default: 0 means no difference.
     </p>
     <p>
         As a contractor with your own limited company
         you might pay less tax personally
         compared to a permanent employee.
-        However in the UK, <a href="http://en.wikipedia.org/wiki/IR35">IR35</a> means some <i>umbrella</i> contractors
-        pay a little more than before.
+        However in the UK <a href="http://en.wikipedia.org/wiki/IR35">IR35</a> means some <i>umbrella</i> contractors
+        pay more than permanent employees.
     </p>
+</fieldset>
+<fieldset>
+    <legend>Risk factor</legend>
+    <input type="text" name="contractingRate.risk" value="${flash['contractingRate.risk']?:0}" maxlength="3" size="4" />
+    <label>%</label>
+    <p>
+        20 means 20% higher rate to accept contracting risk.
+        Default: 0% means no risk considered.
+        <!-- <br/>
+        Risk is not a quotable part of an invoice, its an assumed cost. -->
+    </p>
+    <p>
+        As a contractor you take considerable more risk with your income
+        compared to a permanent employee.
+    </p>
+    <p>
+        Risk of reduced utilisation due to unforeseen cancellation or early contract termination, unpaid invoices, expensive legal liabilities not covered by insurance and more.
+    </p>
+    <!--
+    <p>
+        Legal protection for terminating a business contract compared to employment contract are two different worlds, especially in some countries.
+    </p>
+    <p>
+        When terminated you might risk not being paid for the remaining contract notice period.
+        Or worse the client might not pay or delay payment of the outstanding
+        amount since last invoice.
+    </p>
+    <p>
+        An unforeseen contract cancellation or termination might affect your utilisation,
+        as you will not have lined up a new contract immediately.
+    </p>
+    <p>
+        A contractor also takes on risk of legal implication with liabilities in the work performed.
+        This risk can be reduced with insurance but not removed.
+    </p>
+    -->
 </fieldset>
 
 <br/>
