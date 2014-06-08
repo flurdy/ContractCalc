@@ -1,0 +1,68 @@
+@(title: String)(content: Html)
+
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>@title</title>
+        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/grid.css")">
+        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/ship.css")">
+        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/cargo.css")">
+        <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
+        <script type='text/javascript' src='@routes.WebJarAssets.at(WebJarAssets.locate("jquery.min.js"))'></script>
+    </head>
+<body>
+<div id="ocean" class="structure">
+   <div id="fleet" class="structure">
+      <div id="ship" class="structure">
+         <div id="hull" class="structure">
+            <div id="vaka" class="structure">
+               <div id="bow" class="structure">
+               	<a href="http://github.com/flurdy/ContractCalc"><img alt="Fork me on github" src="@routes.Assets.at("images/ForkMe_Blk.png")" /></a>
+                  <h1>Calculate contract rate</h1>
+               </div>
+               <div id="lookout" class="structure">
+                  <ul>
+							<li><a href="@routes.Application.index">Home</a></li>
+							<li title="calculate invoicable hours in the year"><a href="@routes.TimeController.hoursPerYear">Hours</a></li>
+							<li title="calculate rate based on desired income"><a href="@routes.RateController.enterRate">Rate</a></li>
+							<li title="calculate income bases on desired rate"><a href="@routes.RateController.enterIncomeRate">Income</a></li>
+							<li title="calculate difference in income between two rates and start time"><a href="@routes.RateController.rateDifference">Difference</a></li>
+							<li><a href="@routes.Application.contact">About / Contact</a></li>
+							<li><a href="@routes.Application.resources">Resources</a></li>
+						</ul>
+               </div>
+               <div id="keel" class="structure">
+                  <div id="innerhull" class="structure">
+                     <div id="bulkhead" class="structure">
+                        <div id="ballast" class="structure compartment">
+                           <div id="cargo" class="compartment">
+
+        @content
+
+			            		</div>
+			         		</div>
+			            </div>
+			         </div>
+               </div>
+               <div id="stern" class="compartment">
+						<div id="flurdy"><a href="http://flurdy.com"><img
+                        alt="" title="flurdy" border="0"
+                        src="@routes.Assets.at("images/flurdy_warped_dual_small.png")" /></a></div>
+	            </div>
+	         </div>
+         </div>
+      </div>
+      <div id="ama" class="structure">
+         <div class="compartment">
+         	<div class="ad">
+
+         	</div>
+         </div>
+      </div>
+   </div>
+</div>
+<div id="dragons" class="structure"></div>
+</body>
+<!-- Copyright Ivar Abrahamsen 2012,2014. Copyleft: MIT -->
+</html>

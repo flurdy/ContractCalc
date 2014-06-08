@@ -1,6 +1,6 @@
-#{extends 'main.html' /}
-#{set title:'About / Contact' /}
+@()
 
+@main("About / Contact") {
 
 <h3>About</h3>
 
@@ -31,5 +31,7 @@
 <h3>Resources</h3>
 
 <p>
-    For more information see the <a href="@{Application.resources}">external resources links</a>.
+    For more information see the <a href="@routes.Application.resources">external resources links</a>.
 </p>
+
+}

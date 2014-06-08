@@ -3,39 +3,17 @@
 # ~~~~
 
 # Home page
-GET     /                                       Application.index
-
-# Ignore favicon requests
-GET     /favicon.ico                            404
-
-# Map static resources from the /app/public folder to the /public path
-GET     /public/                                staticDir:public
-
-
+GET     /                           controllers.Application.index
+GET     /hoursPerYear.html          controllers.TimeController.hoursPerYear
+GET     /calculator.html            controllers.RateController.enterRate
+GET     /income/rate.html           controllers.RateController.enterIncomeRate
+GET     /rateDifference.html        controllers.RateController.rateDifference
+GET     /resources.html             controllers.Application.resources
+GET     /contact.html               controllers.Application.contact
 
 
+# Webjars catch all
+GET     /webjars/*file                    controllers.WebJarAssets.at(file)
 
-GET     /calculator.html                        Application.enterRate
-GET     /calculateRate                        Application.rateRedirect
-POST    /calculateRate                       Application.calculateRate
-
-GET     /hoursPerYear.html                    Application.hoursPerYear
-GET     /calculateHoursPerYear                Application.hoursPerYearRedirect
-POST    /calculateHoursPerYear               Application.calculateHoursPerYear
-
-GET     /rateDifference.html                    Application.rateDifference
-GET     /calculateRateDifference                Application.rateDifferenceRedirect
-POST    /calculateRateDifference               Application.calculateRateDifference
-
-GET	  /income/rate.html						Application.enterIncomeRate
-POST	  /income									Application.calculateIncome
-GET	  /income          						Application.showIncome
-
-
-GET     /resources.html                    Application.resources
-GET     /contact.html                    Application.contact
-
-
-
-# Catch all
-*       /{controller}/{action}                  {controller}.{action}
+# Map static resources from the /public folder to the /assets URL path
+GET     /assets/*file               controllers.Assets.at(path="/public", file)

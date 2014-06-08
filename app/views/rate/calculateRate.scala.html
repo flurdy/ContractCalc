@@ -1,5 +1,6 @@
-#{extends 'main.html' /}
-#{set title:'Contract rate' /}
+@()
+
+@main("Contract rate") {
 
 <h3>Calculate contract rate based on desired income</h3>
 <p>
@@ -49,7 +50,7 @@
 <br/>
 <br/>
 #{/if}
-#{form @Application.calculateRate()}
+#{form Application.calculateRate()}
 
 <fieldset>
     <legend>Salary</legend>
@@ -66,7 +67,7 @@
     <br/>
 
     <p>
-        <a href="@{Application.hoursPerYear}">Calculate how many hours will you be available to work/invoice per year</a>.
+        <a href="{Application.hoursPerYear}">Calculate how many hours will you be available to work/invoice per year</a>.
         <br/>
     </p>
     <p>
@@ -209,5 +210,4 @@
 </script>
 
 
-
-
+}

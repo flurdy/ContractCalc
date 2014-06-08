@@ -1,5 +1,6 @@
-#{extends 'main.html' /}
-#{set title:'Enter income rate' /}
+@()
+
+@main("Enter income rate") {
 
 <h3>Calculate income based on desired rate</h3>
 <p>
@@ -66,7 +67,7 @@
 #{/if}
 
 
-#{form @Application.calculateIncome()}
+#{form Application.calculateIncome()}
 
 
 <fieldset>
@@ -98,7 +99,7 @@
 	<label>(days or hours)</label>
 	<p>
 		Hours or days worked and charged per year.
-        <a href="@{Application.hoursPerYear}">Calculate invoicable hours and days per year</a>.
+        <a href="{Application.hoursPerYear}">Calculate invoicable hours and days per year</a>.
         <br/>
     </p>
     <p>
@@ -155,9 +156,4 @@
 <br/>
 <br/>
 
-
-
-
-
-
-
+}

@@ -1,11 +1,12 @@
-#{extends 'main.html' /}
-#{set title:'Calculate contract rate and hours' /}
+@()
+
+@main("Calculate contract rate and hours") {
 
 <!-- <h1>Calculate contract rate and<br/>&nbsp;&nbsp;&nbsp;invoicable hours per year</h1> -->
 
 <br/><br/>
 
-<h3><a href="@{Application.hoursPerYear}">Calculate invoicable hours per year</a></h3>
+<h3><a href="@routes.TimeController.hoursPerYear">Calculate invoicable hours per year</a></h3>
 
 <p>
     To work out a roughly how many hours and days
@@ -14,7 +15,7 @@
 </p>
 <br/><br/>
 
-<h3><a href="@{Application.enterRate}">Calculate contract rate based on desired income</a></h3>
+<h3><a href="@routes.RateController.enterRate">Calculate contract rate based on desired income</a></h3>
 <p>
     To work out a rough contracting rate
     based on your existing permanent salary
@@ -22,7 +23,7 @@
 </p>
 <br/><br/>
 
-<h3><a href="@{Application.enterIncomeRate}">Calculate income based on desired rate</a></h3>
+<h3><a href="@routes.RateController.enterIncomeRate">Calculate income based on desired rate</a></h3>
 
 <p>
     To give an idea how much you could earn on a specific rate per year.<br/>
@@ -31,7 +32,7 @@
 
 <br/><br/>
 
-<h3><a href="@{Application.rateDifference}">Calculate rate differences</a></h3>
+<h3><a href="@routes.RateController.rateDifference">Calculate rate differences</a></h3>
 
 <p>
     How much does actually an extra 25 per day mean?
@@ -45,5 +46,6 @@
 </p>
 
 <p>
-        <a href="@{Application.contact}">Any questions</a>?
+        <a href="@routes.Application.contact">Any questions</a>?
 </p>
+}

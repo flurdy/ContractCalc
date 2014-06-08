@@ -1,5 +1,6 @@
-#{extends 'main.html' /}
-#{set title:'Rate difference' /}
+@()
+
+@main("Rate difference") {
 
 
 <h2>Calculate rate difference</h2>
@@ -57,14 +58,14 @@
 <br/>
 <br/>
 #{/ifErrors}
-#{form @Application.calculateRateDifference()}
+#{form Application.calculateRateDifference()}
 
     <fieldset>
         <legend>Hours per year</legend>
         <input type="text" name="rateDifferenceCalculation.hoursPerYear" value="${flash['rateDifferenceCalculation.hoursPerYear']?:1600}" maxlength="5" size="4" />
         <label>hours</label>
         <p>
-            <a href="@{Application.hoursPerYear}">How many hours will you be available to invoice per year</a>?
+            <a href="{Application.hoursPerYear}">How many hours will you be available to invoice per year</a>?
         </p>
     </fieldset>
 
@@ -127,5 +128,7 @@
 
 
 <p>
-    <a href="@{Application.contact}">Any questions</a>?
+    <a href="{Application.contact}">Any questions</a>?
 </p>
+
+}
