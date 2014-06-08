@@ -1,5 +1,7 @@
 @()
 
+@import helper._
+
 @main("Hours per year") {
 
         <h2>Calculate invoiceable hours per year</h2>
@@ -102,7 +104,7 @@
 <br/>
 #{/ifErrors}
 
-#{form Application.calculateHoursPerYear()}
+@form(action=routes.TimeController.calculateHoursPerYear){
 
 <fieldset>
     <legend>Hour per day</legend>
@@ -184,13 +186,14 @@
     Default: 3 weeks = 15 days.
 </fieldset>
 
-
 <br/>
 <br/>
 
             <button type="submit">Calculate hours per year</button>
 
-#{/form}
+
+}
+
 <br/>
 
 

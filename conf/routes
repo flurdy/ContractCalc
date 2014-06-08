@@ -11,6 +11,10 @@ GET     /rateDifference.html        controllers.RateController.rateDifference
 GET     /resources.html             controllers.Application.resources
 GET     /contact.html               controllers.Application.contact
 
+POST    /calculateHoursPerYear      controllers.TimeController.calculateHoursPerYear
+POST    /calculateRate              controllers.RateController.calculateRate
+POST    /calculateRateDifference    controllers.RateController.calculateRateDifference
+POST	  /income						   controllers.RateController.calculateIncome
 
 # Webjars catch all
 GET     /webjars/*file                    controllers.WebJarAssets.at(file)

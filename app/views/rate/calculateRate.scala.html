@@ -1,5 +1,7 @@
 @()
 
+@import helper._
+
 @main("Contract rate") {
 
 <h3>Calculate contract rate based on desired income</h3>
@@ -50,7 +52,8 @@
 <br/>
 <br/>
 #{/if}
-#{form Application.calculateRate()}
+
+@form(action=routes.RateController.calculateRate){
 
 <fieldset>
     <legend>Salary</legend>
@@ -191,7 +194,8 @@
 
             <button type="submit">Calculate contract rate</button>
 
-#{/form}
+}
+
 <br/>
 
 <script type="text/javascript">

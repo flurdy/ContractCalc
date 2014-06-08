@@ -19,26 +19,44 @@ object Application extends Controller {
 
 }
 
+
 object TimeController extends Controller {
 
   def hoursPerYear = Action {
-    Ok(views.html.hoursPerYear())
+    Ok(views.html.time.hoursPerYear())
+  }
+
+  def calculateHoursPerYear = Action {
+    Ok(views.html.time.hoursPerYear())
   }
 
 }
 
+
 object RateController extends Controller {
 
   def enterRate = Action {
-    Ok(views.html.calculateRate())
+    Ok(views.html.rate.calculateRate())
+  }
+
+  def calculateRate = Action {
+    Ok(views.html.rate.calculateRate())
   }
 
   def enterIncomeRate = Action {
-    Ok(views.html.enterIncomeRate())
+    Ok(views.html.rate.enterIncomeRate())
+  }
+
+  def calculateIncome = Action {
+    Ok(views.html.rate.enterIncomeRate())
   }
 
   def rateDifference = Action {
-    Ok(views.html.rateDifference())
+    Ok(views.html.rate.rateDifference())
+  }
+
+  def calculateRateDifference = Action {
+    Ok(views.html.rate.rateDifference())
   }
 
 }
