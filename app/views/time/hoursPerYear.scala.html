@@ -1,4 +1,4 @@
-@()
+@(hoursForm: Option[Form[(Double,Int,Int,Int,Int,Int,Int)]] = None)
 
 @import helper._
 
@@ -23,10 +23,12 @@
 </p>
 <p>
     The US average for permanent employees are closer to 2000 hours,
-    <a href="http://en.wikipedia.org/wiki/Organisation_for_Economic_Co-operation_and_Development">the OECD</a> average is around 1750,
-    while in Norway it is just under 1500 hours.
+    the <a href="http://en.wikipedia.org/wiki/Organisation_for_Economic_Co-operation_and_Development">OECD</a>
+    <a href="http://stats.oecd.org/Index.aspx?DatasetCode=ANHRS">average is around 1750</a>,
+    while in Norway it is around 1400 hours.
 </p>
 
+@**
 <table>
     <tr>
         <th colspan="4" title="Includes holidays">Optimistic</th>
@@ -92,23 +94,26 @@
 
 <br/>
 <br/>
+**@
 
-#{ifErrors}
-<div>
-    <p class="error">
-        There was a problem with your input, please correct:<br/>
-        ${errors[0]}
-    </p>
-</div>
-<br/>
-<br/>
-#{/ifErrors}
+@for(form <- hoursForm){
+    @for(error <- form.errors){
+        <div>
+            <p class="error">
+                There was a problem with your input, please correct:<br/>
+                @error.message
+            </p>
+        </div>
+        <br/>
+        <br/>
+}   }
 
 @form(action=routes.TimeController.calculateHoursPerYear){
 
 <fieldset>
     <legend>Hour per day</legend>
-    <input type="text" name="hoursPerYearCalculation.hoursPerDay" value="${flash['hoursPerYearCalculation.hoursPerDay']?:7.5}"/>
+    <input type="text" name="hoursPerDay"
+        value="@hoursForm.flatMap(_("hoursPerDay").value).getOrElse(7.5)"/>
     <p>
         How many hours would you work and invoice for per day.
         Not including lunch.
@@ -117,7 +122,8 @@
 
 <fieldset>
     <legend>Holidays</legend>
-    <input type="text" name="hoursPerYearCalculation.holidays" value="${flash['hoursPerYearCalculation.holidays']?:20}" />
+    <input type="text" name="holidays"
+        value="@hoursForm.flatMap(_("holidays").value).getOrElse(20)" />
     <p>
         How many days per year (5 days = 1 week) will you
         <a href="http://en.wikipedia.org/wiki/List_of_statutory_minimum_employment_leave_by_country">take as holiday</a>?
@@ -128,7 +134,8 @@
 
 <fieldset>
     <legend>Public Holidays</legend>
-    <input type="text" name="hoursPerYearCalculation.bankHolidays" value="${flash['hoursPerYearCalculation.bankHolidays']?:9}" />
+    <input type="text" name="bankHolidays"
+        value="@hoursForm.flatMap(_("bankHolidays").value).getOrElse(9)" />
     <p>
         How many days per year will you forced to take as holiday due to
         <a href="http://en.wikipedia.org/wiki/List_of_holidays_by_country">public/bank holiday</a>?   <br/>
@@ -138,7 +145,8 @@
 
 <fieldset>
     <legend>Sick days</legend>
-    <input type="text" name="hoursPerYearCalculation.sickDays" value="${flash['hoursPerYearCalculation.sickDays']?:4}" />
+    <input type="text" name="sickDays"
+        value="@hoursForm.flatMap(_("sickDays").value).getOrElse(4)" />
     <p>
         In a bad year how many days were you off sick?
         How many times was your kids sick and you had to take the day off work (if applicable) etc.    <br/>
@@ -148,17 +156,20 @@
 
 <fieldset>
     <legend>Training days & conferences</legend>
-    <input type="text" name="hoursPerYearCalculation.trainingDays" value="${flash['hoursPerYearCalculation.trainingDays']?:5}" />
+    <input type="text" name="trainingDays"
+        value="@hoursForm.flatMap(_("trainingDays").value).getOrElse(5)" />
     <p>
         How many days will you spend on training courses etc?
-        1 week's course per year? 2 days conferences?                        <br/>
+        1 week's course per year? 2 days conferences?
+        <br/>
         Default: 1 week = 5 days.
     </p>
 </fieldset>
 
 <fieldset>
     <legend>Admin &amp; sales</legend>
-    <input type="text" name="hoursPerYearCalculation.adminDays" value="${flash['hoursPerYearCalculation.adminDays']?:5}" />
+    <input type="text" name="adminDays"
+        value="@hoursForm.flatMap(_("adminDays").value).getOrElse(5)" />
     <p>
         You might be able to do most of your admin (accounting, invoicing, legal, etc)
         in hours outside of your invoice hours.
@@ -168,29 +179,31 @@
      </p>
     <p>
         You will also need to allocate some time to find the next contract,
-        for interviews, keep previous clients happy etc.           <br/>
+        for interviews, keep previous clients happy etc.
+        <br/>
         Default: 1 week = 5 days.
     </p>
 </fieldset>
 
 <fieldset>
     <legend>Utilisation lost</legend>
-    <input type="text" name="hoursPerYearCalculation.benchDays" value="${flash['hoursPerYearCalculation.benchDays']?:15}" />
+    <input type="text" name="benchDays"
+        value="@hoursForm.flatMap(_("benchDays").value).getOrElse(15)" />
     <p>
         How many days do expect to be on "the bench"?
         As how many days will you be without a contract per year.
         Not every contract finish and start perfectly aligned.
         Also some times there can be longer gaps due to market reasons,
         or down periods in the year (summer, December).
-    </p>                                                      <br/>
+    </p>
+    <br/>
     Default: 3 weeks = 15 days.
 </fieldset>
 
 <br/>
 <br/>
 
-            <button type="submit">Calculate hours per year</button>
-
+  <button type="submit">Calculate hours per year</button>
 
 }
 
@@ -198,7 +211,7 @@
 
 
 <p>
-    <a href="{Application.contact}">Any questions</a>?
+    <a href="@routes.Application.contact">Any questions</a>?
 </p>
 
 }

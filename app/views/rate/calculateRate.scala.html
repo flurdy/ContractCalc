@@ -1,4 +1,4 @@
-@()
+@(rateForm: Option[Form[(Int,Int,Int,Int,Int,Int)]] = None)
 
 @import helper._
 
@@ -12,16 +12,18 @@
 </p>
 <br/>
 
-#{ifErrors}
-<div>
-    <p class="error">
-        There was a problem with your input, please correct:<br/>
-        ${errors[0]}
-    </p>
-</div>
+@for(form <- rateForm){
+    @for(error <- form.errors){
+        <div>
+            <p class="error">
+                There was a problem with your input, please correct:<br/>
+                @error.message
+            </p>
+        </div>
         <br/>
-#{/ifErrors}
+}   }
 
+@**
 #{if hourlyRate}
 <table>
     <tr>
@@ -52,25 +54,30 @@
 <br/>
 <br/>
 #{/if}
+**@
 
 @form(action=routes.RateController.calculateRate){
 
 <fieldset>
     <legend>Salary</legend>
-    <input type="text" name="contractingRate.salary" value="${flash['contractingRate.salary']?:50000}" maxlength="12" size="8"/>
+    <input type="text" name="salary"
+        value="@rateForm.flatMap(_("salary").value).getOrElse(50000)"
+        maxlength="12" size="8"/>
     <label>(currency irrelevant)</label>
     <p>How much would your earn as an employee per year before tax.</p>
 </fieldset>
 <fieldset>
     <legend>Hours per year</legend>
 
-    <input type="text" id="hoursYear" name="contractingRate.hoursYear" value="${flash['contractingRate.hoursYear']?:1600}" maxlength="5" size="4" />
+    <input type="text" id="hoursYear" name="hoursYear"
+        value="@rateForm.flatMap(_("hoursYear").value).getOrElse(1600)"
+        maxlength="5" size="4" />
     <label for="hoursYear">hours</label>
 
     <br/>
 
     <p>
-        <a href="{Application.hoursPerYear}">Calculate how many hours will you be available to work/invoice per year</a>.
+        <a href="@routes.TimeController.hoursPerYear">Calculate how many hours will you be available to work/invoice per year</a>.
         <br/>
     </p>
     <p>
@@ -93,7 +100,9 @@
 </fieldset> -->
 <fieldset>
     <legend>Additional cost</legend>
-    <input type="text" name="contractingRate.cost" value="${flash['contractingRate.cost']?:30}" maxlength="3" size="4" />
+    <input type="text" name="cost"
+        value="@rateForm.flatMap(_("cost").value).getOrElse(30)"
+        maxlength="3" size="4" />
     <label>%</label>
     <p>
         0 indicates no additional cost. Default: 30% means 30% additional costs.
@@ -121,7 +130,9 @@
 </fieldset>
 <fieldset>
     <legend>Utilisation</legend>
-    <input type="text" name="contractingRate.utilisation" value="${flash['contractingRate.utilisation']?:90}" maxlength="3" size="4" />
+    <input type="text" name="utilisation"
+        value="@rateForm.flatMap(_("utilisation").value).getOrElse(90)"
+        maxlength="3" size="4" />
     <label>%</label>
     <p>
         100% indicates full utilisation. Default: 90% utilisation, ie. you loose 10% of your income.
@@ -138,7 +149,9 @@
 </fieldset>
 <fieldset>
     <legend>Tax difference</legend>
-    <input type="text" name="contractingRate.tax" value="${flash['contractingRate.tax']?:0}" maxlength="3" size="4" />
+    <input type="text" name="tax"
+        value="@rateForm.flatMap(_("tax").value).getOrElse(0)"
+        maxlength="3" size="4" />
     <label>%</label>
     <p>
         10 means 10% more tax, -20 means 20% less tax, ie earn 20% more. Default: 0 means no difference.
@@ -153,7 +166,9 @@
 </fieldset>
 <fieldset>
     <legend>Risk factor</legend>
-    <input type="text" name="contractingRate.risk" value="${flash['contractingRate.risk']?:0}" maxlength="3" size="4" />
+    <input type="text" name="risk"
+        value="@rateForm.flatMap(_("risk").value).getOrElse(0)"
+        maxlength="3" size="4" />
     <label>%</label>
     <p>
         20 means 20% higher rate to accept contracting risk.
@@ -191,8 +206,7 @@
 <br/>
 <br/>
 
-
-            <button type="submit">Calculate contract rate</button>
+    <button type="submit">Calculate contract rate</button>
 
 }
 

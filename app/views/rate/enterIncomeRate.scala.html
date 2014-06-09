@@ -1,4 +1,4 @@
-@()
+@(rateForm: Option[Form[(Int,String,Int,Int,Int)]] = None)
 
 @import helper._
 
@@ -18,17 +18,18 @@
 <br/>
 
 
-#{ifErrors}
-<div>
-    <p class="error">
-        There was a problem with your input, please correct:<br/>
-        ${errors[0]}
-    </p>
-</div>
-<br/>
-#{/ifErrors}
+@for(form <- rateForm){
+    @for(error <- form.errors){
+		<div>
+		    <p class="error">
+		        There was a problem with your input, please correct:<br/>
+		       @error.message
+		    </p>
+		</div>
+		<br/>
+}   }
 
-
+@**
 #{if grossIncome || realisticIncome || comparableIncome}
 	<h4>Calculated income</h4>
 
@@ -67,14 +68,15 @@
 <br/>
 <br/>
 #{/if}
-
+**@
 
 @form(action=routes.RateController.calculateIncome){
 
-
 <fieldset>
 	<legend>Rate</legend>
-	<input type="text" name="incomeCalculation.rate" value="${flash['incomeCalculation.rate']?:400}" maxlength="12" size="6"/>
+	<input type="text" name="rate" required
+        value="@rateForm.flatMap(_("rate").value).getOrElse(400)"
+        maxlength="12" size="6"/>
 	<label>(currency irrelevant)</label>
 	<p>
 		How much to charge for each hour or day
@@ -83,12 +85,12 @@
 
 <fieldset>
 	<legend>Rate length</legend>
-	<input type="radio" id="perday" name="incomeCalculation.ratelength" value="day"
-	#{if flash['incomeCalculation.ratelength']?:'day' == 'day'} checked #{/if} />
+	<input type="radio" id="perday" name="ratelength" value="day" required
+       @if(rateForm.flatMap(_("ratelength").value)==Some("day")){checked} />
 	<label for="perday">Per day</label>
 
-	<input type="radio" id="perhour" name="incomeCalculation.ratelength" value="hour"
-	#{if flash['incomeCalculation.ratelength'] == 'hour'} checked #{/if} />
+	<input type="radio" id="perhour" name="ratelength" value="hour" required
+	@if(rateForm.flatMap(_("ratelength").value)==Some("hour")){checked} />
 	<label for="perhour">Per hour</label>
 	<p>
 		Charge by the day or by the hour?
@@ -97,7 +99,9 @@
 
 <fieldset>
 	<legend>Charge units per year</legend>
-	<input type="text" name="incomeCalculation.peryear" value="${flash['incomeCalculation.peryear']?:210}" maxlength="16" size="6"/>
+	<input type="text" name="peryear" required
+        value="@rateForm.flatMap(_("peryear").value).getOrElse(210)"
+        maxlength="16" size="6"/>
 	<label>(days or hours)</label>
 	<p>
 		Hours or days worked and charged per year.
@@ -113,7 +117,9 @@
 
 <fieldset>
    <legend>Additional cost</legend>
-   <input type="text" name="incomeCalculation.cost" value="${flash['incomeCalculation.cost']?:30}" maxlength="3" size="4" />
+   <input type="text" name="cost"
+        value="@rateForm.flatMap(_("cost").value).getOrElse(30)"
+        maxlength="3" size="4" />
    <label>%</label>
     <p>
         0 indicates no additional cost. Default: 30% means 30% additional costs.
@@ -127,7 +133,9 @@
 
 <fieldset>
     <legend>Utilisation</legend>
-    <input type="text" name="incomeCalculation.utilisation" value="${flash['incomeCalculation.utilisation']?:90}" maxlength="3" size="4" />
+    <input type="text" name="utilisation"
+        value="@rateForm.flatMap(_("utilisation").value).getOrElse(90)"
+        maxlength="3" size="4" />
     <label>%</label>
     <p>
         100% indicates full utilisation. Default: 90% utilisation.

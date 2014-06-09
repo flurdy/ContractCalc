@@ -1,4 +1,4 @@
-@()
+@(rateForm: Option[Form[(Int,Double,Int,Int,String,Int)]] = None)
 
 @import helper._
 
@@ -20,7 +20,7 @@
 
 
 <br/>
-
+@**
 <table>
     <tr>
         <th colspan="5">Estimated annual revenue</th>
@@ -47,34 +47,40 @@
         <td><i>Bench time ignored</i></td>
     </tr>
 </table>
+**@
 
 <br/>
-#{ifErrors}
-<br/>
-<div>
-    <p class="error">
-        There was a problem with your input, please correct:<br/>
-        ${errors[0]}
-    </p>
-</div>
-<br/>
-<br/>
-#{/ifErrors}
+@for(form <- rateForm){
+    @for(error <- form.errors){
+        <br/>
+        <div>
+            <p class="error">
+                There was a problem with your input, please correct:<br/>
+                @error.message
+            </p>
+        </div>
+        <br/>
+        <br/>
+}   }
 
 @form(action=routes.RateController.calculateRateDifference){
 
     <fieldset>
         <legend>Hours per year</legend>
-        <input type="text" name="rateDifferenceCalculation.hoursPerYear" value="${flash['rateDifferenceCalculation.hoursPerYear']?:1600}" maxlength="5" size="4" />
+        <input type="text" name="hoursPerYear"
+            value="@rateForm.flatMap(_("hoursPerYear").value).getOrElse(1600)"
+            maxlength="5" size="4" />
         <label>hours</label>
         <p>
-            <a href="{Application.hoursPerYear}">How many hours will you be available to invoice per year</a>?
+            <a href="@routes.TimeController.hoursPerYear">How many hours will you be available to invoice per year</a>?
         </p>
     </fieldset>
 
     <fieldset>
         <legend>Hour per day</legend>
-        <input type="text" name="rateDifferenceCalculation.hoursPerDay" value="${flash['rateDifferenceCalculation.hoursPerDay']?:7.5}"/>
+        <input type="text" name="hoursPerDay"
+            value="@rateForm.flatMap(_("hoursPerDay").value).getOrElse(7.5)"
+            maxlength="5" size="4" />
         <label>hours</label>
         <p>
             How many hours would you work and invoice for per day.
@@ -84,7 +90,9 @@
 
     <fieldset>
         <legend>Rate 1</legend>
-        <input type="text" name="rateDifferenceCalculation.rate1" value="${flash['rateDifferenceCalculation.rate1']?:400}" maxlength="12" size="6" />
+        <input type="text" name="rate1"
+            value="@rateForm.flatMap(_("rate1").value).getOrElse(400)"
+            maxlength="12" size="6" />
         <label></label>
         <p>
 
@@ -92,7 +100,9 @@
     </fieldset>
     <fieldset>
         <legend>Rate 2</legend>
-        <input type="text" name="rateDifferenceCalculation.rate2" value="${flash['rateDifferenceCalculation.rate2']?:500}" maxlength="12" size="6" />
+        <input type="text" name="rate2"
+            value="@rateForm.flatMap(_("rate2").value).getOrElse(500)"
+            maxlength="12" size="6" />
         <label></label>
         <p>
 
@@ -101,11 +111,11 @@
 
     <fieldset>
         <legend>Rate time unit</legend>
-        <input type="radio" id="hourRateUnit" name="rateDifferenceCalculation.rateUnit" value="hour"
-            #{if flash['rateDifferenceCalculation.rateUnit'] && flash['rateDifferenceCalculation.rateUnit'] == 'hour'}checked="checked" #{/if}/>
+        <input type="radio" id="hourRateUnit" name="rateUnit" value="hour" required
+            @if(rateForm.flatMap(_("rateUnit").value)==Some("hour")){checked} />
         <label for="hourRateUnit">per hour</label>
-        <input type="radio" id="dayRateUnit" name="rateDifferenceCalculation.rateUnit" value="day"
-            #{if !flash['rateDifferenceCalculation.rateUnit'] || flash['rateDifferenceCalculation.rateUnit'] == 'day'}checked="checked" #{/if}/>
+        <input type="radio" id="dayRateUnit" name="rateUnit" value="day" required
+            @if(rateForm.flatMap(_("rateUnit").value)==Some("day")){checked} />
         <label for="dayRateUnit">per day</label>
         <p>
 
@@ -114,7 +124,9 @@
 
     <fieldset>
         <legend>Bench time</legend>
-        <input type="text" name="rateDifferenceCalculation.benchTime" value="${flash['rateDifferenceCalculation.benchTime']?:0}" maxlength="4" size="4" />
+        <input type="text" name="benchTime"
+            value="@rateForm.flatMap(_("benchTime").value).getOrElse(0)"
+            maxlength="4" size="4" />
         <label> days</label>
         <p>
             How many invoiceable days before contract for rate 2 starts?
