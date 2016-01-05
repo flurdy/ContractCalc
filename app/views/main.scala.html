@@ -5,11 +5,12 @@
 <html>
     <head>
         <title>@title</title>
+        @* <link rel="stylesheet" media="screen" href="@routes.WebJarAssets.at(WebJarAssets.locate("bootstrap.min.css"))"> *@
         <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/grid.css")">
         <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/ship.css")">
         <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/cargo.css")">
         <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
-        <script type='text/javascript' src='@routes.WebJarAssets.at(WebJarAssets.locate("jquery.min.js"))'></script>
+        @* TODO reintroduce analytics *@
     </head>
 <body>
 <div id="ocean" class="structure">
@@ -56,13 +57,15 @@
       <div id="ama" class="structure">
          <div class="compartment">
          	<div class="ad">
-
+@* TODO reintroduce ads *@
          	</div>
          </div>
       </div>
    </div>
 </div>
 <div id="dragons" class="structure"></div>
+  <script type='text/javascript' src='@routes.WebJarAssets.at(WebJarAssets.locate("jquery.min.js"))'></script>
+  @* <script type='text/javascript' src='@routes.WebJarAssets.at(WebJarAssets.locate("bootstrap.min.js"))'></script> *@
 </body>
 <!-- Copyright Ivar Abrahamsen 2012,2014. Copyleft: MIT -->
 </html>

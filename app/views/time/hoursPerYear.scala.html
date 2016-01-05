@@ -1,4 +1,4 @@
-@(hoursForm: Option[Form[(Double,Int,Int,Int,Int,Int,Int)]] = None)
+@(hoursForm: Option[Form[(BigDecimal,Int,Int,Int,Int,Int,Int)]] = None)
 
 @import helper._
 
@@ -113,10 +113,16 @@
 <fieldset>
     <legend>Hour per day</legend>
     <input type="text" name="hoursPerDay"
-        value="@hoursForm.flatMap(_("hoursPerDay").value).getOrElse(7.5)"/>
+        value="@hoursForm.flatMap(_("hoursPerDay").value).getOrElse(7.0)"/>
     <p>
         How many hours would you work and invoice for per day.
         Not including lunch.
+        @* 1=@hoursForm.flatMap(_("hoursPerDay").value).getOrElse(7.5) <br/>
+        2=@hoursForm.map(_("hoursPerDay").value) <br/>
+        @{hoursForm match{
+            case Some(form) => "ssssss"
+            case None => "hhhh"
+        }} *@
     </p>
 </fieldset>
 
@@ -155,7 +161,7 @@
 </fieldset>
 
 <fieldset>
-    <legend>Training days & conferences</legend>
+    <legend>Training days &amp; conferences</legend>
     <input type="text" name="trainingDays"
         value="@hoursForm.flatMap(_("trainingDays").value).getOrElse(5)" />
     <p>

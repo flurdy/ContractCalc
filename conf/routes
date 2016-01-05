@@ -11,20 +11,17 @@ GET     /rateDifference.html        controllers.RateController.rateDifference
 GET     /resources.html             controllers.Application.resources
 GET     /contact.html               controllers.Application.contact
 
-GET    /calculateHoursPerYear      controllers.TimeController.redirectHoursPerYear
+GET     /calculateHoursPerYear      controllers.TimeController.redirectHoursPerYear
 POST    /calculateHoursPerYear      controllers.TimeController.calculateHoursPerYear
 
-GET    /calculateRate              controllers.RateController.redirectEnterRate
+GET     /calculateRate              controllers.RateController.redirectEnterRate
 POST    /calculateRate              controllers.RateController.calculateRate
 
-GET    /calculateRateDifference    controllers.RateController.redirectRateDifference
+GET     /calculateRateDifference    controllers.RateController.redirectRateDifference
 POST    /calculateRateDifference    controllers.RateController.calculateRateDifference
 
 GET	  /income						   controllers.RateController.redirectEnterIncomeRate
 POST	  /income						   controllers.RateController.calculateIncome
 
-# Webjars catch all
-GET     /webjars/*file                    controllers.WebJarAssets.at(file)
-
-# Map static resources from the /public folder to the /assets URL path
+GET     /webjars/*file              controllers.WebJarAssets.at(file)
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
