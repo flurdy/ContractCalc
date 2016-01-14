@@ -36,7 +36,8 @@ class TimeController extends Controller {
   	  ) verifying ("hours per day not valid", fields =>
   	  		fields match {
   	  			case (hoursPerDay, _, _, _, _, _, _) => {
-  	  				hoursPerDay < BigDecimal(24) && hoursPerDay > BigDecimal(0)   	  			}
+  	  				hoursPerDay < BigDecimal(24) && hoursPerDay > BigDecimal(0)
+          	}
   	  		}
   	  )
   )
@@ -68,40 +69,40 @@ class TimeController extends Controller {
 
 class RateController extends Controller {
 
-  def enterRate = Action {
+  def showEnterIncomeToCalculateRate = Action {
     Ok(views.html.rate.calculateRate())
   }
 
-  def redirectEnterRate = Action {
-    Redirect(routes.RateController.enterRate)
+  def redirectEnterIncomeToCalculateRate = Action {
+    Redirect(routes.RateController.showEnterIncomeToCalculateRate)
   }
 
-  def calculateRate = Action {
-    Ok(views.html.rate.calculateRate())
+  def calculateRateFromIncome = Action {
+    Redirect(routes.RateController.showEnterIncomeToCalculateRate)
   }
 
-  def enterIncomeRate = Action {
-    Ok(views.html.rate.enterIncomeRate())
+  def showEnterRateToCalculateIncome = Action {
+    Ok(views.html.rate.calculateIncome())
   }
 
-  def redirectEnterIncomeRate = Action {
-    Redirect(routes.RateController.enterIncomeRate)
+  def redirectEnterRateToCalculateIncome = Action {
+    Redirect(routes.RateController.showEnterRateToCalculateIncome)
   }
 
-  def calculateIncome = Action {
-    Ok(views.html.rate.enterIncomeRate())
+  def calculateIncomeFromRate = Action {
+    Redirect(routes.RateController.showEnterRateToCalculateIncome)
   }
 
-  def rateDifference = Action {
+  def showRateDifference = Action {
     Ok(views.html.rate.rateDifference())
   }
 
   def redirectRateDifference = Action {
-    Redirect(routes.RateController.rateDifference)
+    Redirect(routes.RateController.showRateDifference)
   }
 
   def calculateRateDifference = Action {
-    Ok(views.html.rate.rateDifference())
+    Redirect(routes.RateController.showRateDifference)
   }
 
 }

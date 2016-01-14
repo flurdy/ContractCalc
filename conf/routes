@@ -3,25 +3,29 @@
 # ~~~~
 
 # Home page
-GET     /                           controllers.Application.index
-GET     /hoursPerYear.html          controllers.TimeController.hoursPerYear
-GET     /calculator.html            controllers.RateController.enterRate
-GET     /income/rate.html           controllers.RateController.enterIncomeRate
-GET     /rateDifference.html        controllers.RateController.rateDifference
-GET     /resources.html             controllers.Application.resources
-GET     /contact.html               controllers.Application.contact
+GET     /                               controllers.Application.index
+GET     /hoursPerYear.html              controllers.TimeController.redirectHoursPerYear
+GET     /time/per-year/calculate-invoicable-hours.html   controllers.TimeController.hoursPerYear
+GET     /calculator.html                controllers.RateController.redirectEnterIncomeToCalculateRate
+GET     /income/calculate-rate.html     controllers.RateController.showEnterIncomeToCalculateRate
+GET     /income/rate.html               controllers.RateController.redirectEnterRateToCalculateIncome
+GET     /rate/calculate-income.html     controllers.RateController.showEnterRateToCalculateIncome
+GET     /rateDifference.html            controllers.RateController.redirectRateDifference
+GET     /rate/calculate-difference.html controllers.RateController.showRateDifference
+GET     /resources.html                 controllers.Application.resources
+GET     /contact.html                   controllers.Application.contact
 
-GET     /calculateHoursPerYear      controllers.TimeController.redirectHoursPerYear
-POST    /calculateHoursPerYear      controllers.TimeController.calculateHoursPerYear
+GET     /time/per-year/calculate-invoicable-hours  controllers.TimeController.redirectHoursPerYear
+POST    /time/per-year/calculate-invoicable-hours  controllers.TimeController.calculateHoursPerYear
 
-GET     /calculateRate              controllers.RateController.redirectEnterRate
-POST    /calculateRate              controllers.RateController.calculateRate
+GET     /rate/calculate-rate            controllers.RateController.redirectEnterIncomeToCalculateRate
+POST    /rate/calculate-rate            controllers.RateController.calculateRateFromIncome
 
-GET     /calculateRateDifference    controllers.RateController.redirectRateDifference
-POST    /calculateRateDifference    controllers.RateController.calculateRateDifference
+GET     /rate/calculate-difference      controllers.RateController.redirectRateDifference
+POST    /rate/calculate-difference      controllers.RateController.calculateRateDifference
 
-GET	  /income						   controllers.RateController.redirectEnterIncomeRate
-POST	  /income						   controllers.RateController.calculateIncome
+GET	  /time/calculate-income          controllers.RateController.redirectEnterRateToCalculateIncome
+POST    /time/calculate-income          controllers.RateController.calculateIncomeFromRate
 
-GET     /webjars/*file              controllers.WebJarAssets.at(file)
-GET     /assets/*file               controllers.Assets.at(path="/public", file)
+GET     /webjars/*file                  controllers.WebJarAssets.at(file)
+GET     /assets/*file                   controllers.Assets.at(path="/public", file)
