@@ -1,4 +1,4 @@
-@(rateForm: Option[Form[(Int,Int,Int,Int,Int,Int)]] = None)
+@(rateForm: Form[CalculateRateForm])
 
 @import helper._
 
@@ -12,8 +12,7 @@
 </p>
 <br/>
 
-@for(form <- rateForm){
-    @for(error <- form.errors){
+@for(error <- rateForm.errors){
         <div>
             <p class="error">
                 There was a problem with your input, please correct:<br/>
@@ -21,7 +20,7 @@
             </p>
         </div>
         <br/>
-}   }
+}
 
 @**
 #{if hourlyRate}
@@ -61,7 +60,7 @@
 <fieldset>
     <legend>Salary</legend>
     <input type="text" name="salary"
-        value="@rateForm.flatMap(_("salary").value).getOrElse(50000)"
+        value="@rateForm("salary").value.getOrElse(50000)"
         maxlength="12" size="8"/>
     <label>(currency irrelevant)</label>
     <p>How much would your earn as an employee per year before tax.</p>
@@ -70,7 +69,7 @@
     <legend>Hours per year</legend>
 
     <input type="text" id="hoursYear" name="hoursYear"
-        value="@rateForm.flatMap(_("hoursYear").value).getOrElse(1600)"
+        value="@rateForm("hoursPerYear").value.getOrElse(1600)"
         maxlength="5" size="4" />
     <label for="hoursYear">hours</label>
 
@@ -101,7 +100,7 @@
 <fieldset>
     <legend>Additional cost</legend>
     <input type="text" name="cost"
-        value="@rateForm.flatMap(_("cost").value).getOrElse(30)"
+        value="@rateForm("cost").value.getOrElse(30)"
         maxlength="3" size="4" />
     <label>%</label>
     <p>
@@ -131,7 +130,7 @@
 <fieldset>
     <legend>Utilisation</legend>
     <input type="text" name="utilisation"
-        value="@rateForm.flatMap(_("utilisation").value).getOrElse(90)"
+        value="@rateForm("utilisation").value.getOrElse(90)"
         maxlength="3" size="4" />
     <label>%</label>
     <p>
@@ -150,7 +149,7 @@
 <fieldset>
     <legend>Tax difference</legend>
     <input type="text" name="tax"
-        value="@rateForm.flatMap(_("tax").value).getOrElse(0)"
+        value="@rateForm("tax").value.getOrElse(0)"
         maxlength="3" size="4" />
     <label>%</label>
     <p>
@@ -167,7 +166,7 @@
 <fieldset>
     <legend>Risk factor</legend>
     <input type="text" name="risk"
-        value="@rateForm.flatMap(_("risk").value).getOrElse(0)"
+        value="@rateForm("risk").value.getOrElse(0)"
         maxlength="3" size="4" />
     <label>%</label>
     <p>

@@ -1,4 +1,4 @@
-@(rateForm: Option[Form[(Int,Double,Int,Int,String,Int)]] = None)
+@(rateForm: Form[CalculateRateDifferenceForm])
 
 @import helper._
 
@@ -50,8 +50,7 @@
 **@
 
 <br/>
-@for(form <- rateForm){
-    @for(error <- form.errors){
+@for(error <- rateForm.errors){
         <br/>
         <div>
             <p class="error">
@@ -61,14 +60,14 @@
         </div>
         <br/>
         <br/>
-}   }
+}
 
 @form(action=routes.RateController.calculateRateDifference){
 
     <fieldset>
         <legend>Hours per year</legend>
         <input type="text" name="hoursPerYear"
-            value="@rateForm.flatMap(_("hoursPerYear").value).getOrElse(1600)"
+            value="@rateForm("hoursPerYear").value.getOrElse(1600)"
             maxlength="5" size="4" />
         <label>hours</label>
         <p>
@@ -79,7 +78,7 @@
     <fieldset>
         <legend>Hour per day</legend>
         <input type="text" name="hoursPerDay"
-            value="@rateForm.flatMap(_("hoursPerDay").value).getOrElse(7.5)"
+            value="@rateForm("hoursPerDay").value.getOrElse(7.5)"
             maxlength="5" size="4" />
         <label>hours</label>
         <p>
@@ -91,7 +90,7 @@
     <fieldset>
         <legend>Rate 1</legend>
         <input type="text" name="rate1"
-            value="@rateForm.flatMap(_("rate1").value).getOrElse(400)"
+            value="@rateForm("rate1").value.getOrElse(400)"
             maxlength="12" size="6" />
         <label></label>
         <p>
@@ -101,7 +100,7 @@
     <fieldset>
         <legend>Rate 2</legend>
         <input type="text" name="rate2"
-            value="@rateForm.flatMap(_("rate2").value).getOrElse(500)"
+            value="@rateForm("rate2").value.getOrElse(500)"
             maxlength="12" size="6" />
         <label></label>
         <p>
@@ -111,12 +110,14 @@
 
     <fieldset>
         <legend>Rate time unit</legend>
-        <input type="radio" id="hourRateUnit" name="rateUnit" value="hour" required
-            @if(rateForm.flatMap(_("rateUnit").value)==Some("hour")){checked} />
-        <label for="hourRateUnit">per hour</label>
-        <input type="radio" id="dayRateUnit" name="rateUnit" value="day" required
-            @if(rateForm.flatMap(_("rateUnit").value)==Some("day")){checked} />
-        <label for="dayRateUnit">per day</label>
+        <input type="radio" id="perday" name="rate-length.rate-length" value="day" required
+           @if(rateForm("rate-length.rate-length").value!=Some("hour")){checked} />
+       <label for="perday">Per day</label>
+
+        <input type="radio" id="perhour" name="rate-length.rate-length" value="hour" required
+        @if(rateForm("rate-length.rate-length").value==Some("hour")){checked} />
+        <label for="perhour">Per hour</label>
+
         <p>
 
         </p>
@@ -125,7 +126,7 @@
     <fieldset>
         <legend>Bench time</legend>
         <input type="text" name="benchTime"
-            value="@rateForm.flatMap(_("benchTime").value).getOrElse(0)"
+            value="@rateForm("benchTime").value.getOrElse(0)"
             maxlength="4" size="4" />
         <label> days</label>
         <p>

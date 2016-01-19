@@ -1,4 +1,4 @@
-@(hoursForm: Option[Form[(BigDecimal,Int,Int,Int,Int,Int,Int)]] = None)
+@(hoursForm: Form[TimeForm])
 
 @import helper._
 
@@ -11,6 +11,10 @@
             ie invoiceable hours per year.
         </p>
 
+<p>
+   A non leap year consist of 365 days across 52 weeks.
+   Take away weekends and you have a maximum of 260 days to invoice.
+</p>
     <p>
         You need some holidays and you may be sick.
         You may want to take time off for training and conferences.
@@ -18,11 +22,7 @@
         You will need time for administration and sales/interviews.
     </p>
 <p>
-   A non leap year consist of 365 days across 52 weeks.
-   Take away weekends and you have a maximum of 260 days to invoice.
-</p>
-<p>
-    The US average for permanent employees are closer to 2000 hours,
+    The US average for permanent employees are closer to 2000 hours per year,
     the <a href="http://en.wikipedia.org/wiki/Organisation_for_Economic_Co-operation_and_Development">OECD</a>
     <a href="http://stats.oecd.org/Index.aspx?DatasetCode=ANHRS">average is around 1750</a>,
     while in Norway it is around 1400 hours.
@@ -96,8 +96,7 @@
 <br/>
 **@
 
-@for(form <- hoursForm){
-    @for(error <- form.errors){
+@for(error <- hoursForm.errors){
         <div>
             <p class="error">
                 There was a problem with your input, please correct:<br/>
@@ -106,14 +105,14 @@
         </div>
         <br/>
         <br/>
-}   }
+}
 
 @form(action=routes.TimeController.calculateHoursPerYear){
 
 <fieldset>
     <legend>Hour per day</legend>
     <input type="text" name="hoursPerDay"
-        value="@hoursForm.flatMap(_("hoursPerDay").value).getOrElse(7.0)"/>
+        value="@hoursForm("hoursPerDay").value"/>
     <p>
         How many hours would you work and invoice for per day.
         Not including lunch.
@@ -129,7 +128,7 @@
 <fieldset>
     <legend>Holidays</legend>
     <input type="text" name="holidays"
-        value="@hoursForm.flatMap(_("holidays").value).getOrElse(20)" />
+        value="@hoursForm("holidays").value" />
     <p>
         How many days per year (5 days = 1 week) will you
         <a href="http://en.wikipedia.org/wiki/List_of_statutory_minimum_employment_leave_by_country">take as holiday</a>?
@@ -141,7 +140,7 @@
 <fieldset>
     <legend>Public Holidays</legend>
     <input type="text" name="bankHolidays"
-        value="@hoursForm.flatMap(_("bankHolidays").value).getOrElse(9)" />
+        value="@hoursForm("bankHolidays").value" />
     <p>
         How many days per year will you forced to take as holiday due to
         <a href="http://en.wikipedia.org/wiki/List_of_holidays_by_country">public/bank holiday</a>?   <br/>
@@ -152,7 +151,7 @@
 <fieldset>
     <legend>Sick days</legend>
     <input type="text" name="sickDays"
-        value="@hoursForm.flatMap(_("sickDays").value).getOrElse(4)" />
+        value="@hoursForm("sickDays").value" />
     <p>
         In a bad year how many days were you off sick?
         How many times was your kids sick and you had to take the day off work (if applicable) etc.    <br/>
@@ -163,7 +162,7 @@
 <fieldset>
     <legend>Training days &amp; conferences</legend>
     <input type="text" name="trainingDays"
-        value="@hoursForm.flatMap(_("trainingDays").value).getOrElse(5)" />
+        value="@hoursForm("trainingDays").value" />
     <p>
         How many days will you spend on training courses etc?
         1 week's course per year? 2 days conferences?
@@ -175,7 +174,7 @@
 <fieldset>
     <legend>Admin &amp; sales</legend>
     <input type="text" name="adminDays"
-        value="@hoursForm.flatMap(_("adminDays").value).getOrElse(5)" />
+        value="@hoursForm("adminDays").value" />
     <p>
         You might be able to do most of your admin (accounting, invoicing, legal, etc)
         in hours outside of your invoice hours.
@@ -194,7 +193,7 @@
 <fieldset>
     <legend>Utilisation lost</legend>
     <input type="text" name="benchDays"
-        value="@hoursForm.flatMap(_("benchDays").value).getOrElse(15)" />
+        value="@hoursForm("benchDays").value" />
     <p>
         How many days do expect to be on "the bench"?
         As how many days will you be without a contract per year.

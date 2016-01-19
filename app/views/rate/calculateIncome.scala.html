@@ -1,4 +1,4 @@
-@(rateForm: Option[Form[(Int,String,Int,Int,Int)]] = None)
+@(rateForm: Form[CalculateIncomeForm])
 
 @import helper._
 
@@ -18,8 +18,7 @@
 <br/>
 
 
-@for(form <- rateForm){
-    @for(error <- form.errors){
+ @for(error <- rateForm.errors){
 		<div>
 		    <p class="error">
 		        There was a problem with your input, please correct:<br/>
@@ -27,7 +26,7 @@
 		    </p>
 		</div>
 		<br/>
-}   }
+}
 
 @**
 #{if grossIncome || realisticIncome || comparableIncome}
@@ -75,7 +74,8 @@
 <fieldset>
 	<legend>Rate</legend>
 	<input type="text" name="rate" required
-        value="@rateForm.flatMap(_("rate").value).getOrElse(400)"
+        value="@rateForm("rate").value.getOrElse(400)"
+        placeholder="400"
         maxlength="12" size="6"/>
 	<label>(currency irrelevant)</label>
 	<p>
@@ -85,12 +85,12 @@
 
 <fieldset>
 	<legend>Rate length</legend>
-	<input type="radio" id="perday" name="ratelength" value="day" required
-       @if(rateForm.flatMap(_("ratelength").value)==Some("day")){checked} />
-	<label for="perday">Per day</label>
+	<input type="radio" id="perday" name="rate-length.rate-length" value="day" required
+       @if(rateForm("rate-length.rate-length").value!=Some("hour")){checked} />
+   <label for="perday">Per day</label>
 
-	<input type="radio" id="perhour" name="ratelength" value="hour" required
-	@if(rateForm.flatMap(_("ratelength").value)==Some("hour")){checked} />
+	<input type="radio" id="perhour" name="rate-length.rate-length" value="hour" required
+	@if(rateForm("rate-length.rate-length").value==Some("hour")){checked} />
 	<label for="perhour">Per hour</label>
 	<p>
 		Charge by the day or by the hour?
@@ -99,8 +99,9 @@
 
 <fieldset>
 	<legend>Charge units per year</legend>
-	<input type="text" name="peryear" required
-        value="@rateForm.flatMap(_("peryear").value).getOrElse(210)"
+	<input type="text" name="charge-units-per-year" required
+        value="@rateForm("charge-units-per-year").value.getOrElse(210)"
+        placeholder="210"
         maxlength="16" size="6"/>
 	<label>(days or hours)</label>
 	<p>
@@ -117,12 +118,12 @@
 
 <fieldset>
    <legend>Additional cost</legend>
-   <input type="text" name="cost"
-        value="@rateForm.flatMap(_("cost").value).getOrElse(30)"
+   <input type="text" name="cost" placeholder="20"
+        value="@rateForm("cost").value.getOrElse(20)"
         maxlength="3" size="4" />
    <label>%</label>
     <p>
-        0 indicates no additional cost. Default: 30% means 30% additional costs.
+        0 indicates no additional cost. Default: 20% means 20% additional costs.
     </p>
     <p>
     	Being self employed involves a lot of extra costs.
@@ -133,8 +134,8 @@
 
 <fieldset>
     <legend>Utilisation</legend>
-    <input type="text" name="utilisation"
-        value="@rateForm.flatMap(_("utilisation").value).getOrElse(90)"
+    <input type="text" name="utilisation" placeholder="90"
+        value="@rateForm("utilisation").value.getOrElse(90)"
         maxlength="3" size="4" />
     <label>%</label>
     <p>
