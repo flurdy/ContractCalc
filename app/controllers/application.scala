@@ -16,24 +16,33 @@ class Application extends Controller {
 
 }
 
+case class PerYear(maximumWeekDays: Int, hoursPerDay: BigDecimal, days: Int){
+  val weeks: Int        = days / 5
+  val hours: BigDecimal = (days * hoursPerDay).setScale(0,BigDecimal.RoundingMode.HALF_UP)
+  val percentage: Int   = Math.floor( (days * 100)/ maximumWeekDays ).toInt
+}
 
-case class TimeForm(hoursPerDay: BigDecimal, holidays: Int, bankHolidays: Int,
-                    sickDays: Int, trainingDays: Int, adminDays: Int, benchDays: Int)
+case class PerYearCalculation(hoursPerDay: BigDecimal, holidays: Int, bankHolidays: Int,
+                    sickDays: Int, trainingDays: Int, adminDays: Int, benchDays: Int){
+  private val maximumWeekDays = 365 / 7 * 5
+  val unrealistic = PerYear(maximumWeekDays, hoursPerDay, maximumWeekDays - bankHolidays)
+  val optimistic  = PerYear(maximumWeekDays, hoursPerDay, unrealistic.days - holidays - trainingDays - adminDays)
+  val realistic   = PerYear(maximumWeekDays, hoursPerDay, optimistic.days - sickDays - benchDays)
+}
 
 
 class TimeController extends Controller {
 
-
-  val timeForm = Form(
+  val perYearCalculation = Form(
   	  mapping(
-  	  	 "hoursPerDay"  -> default(bigDecimal(4,2), BigDecimal("8.0")),
+  	  	 "hoursPerDay"  -> default(bigDecimal, BigDecimal("8.0")),
   	  	 "holidays"     -> default(number(min = 0, max = 366), 25),
   	  	 "bankHolidays" -> default(number(min = 0, max = 366), 9),
          "sickDays"     -> default(number(min = 0, max = 366), 4),
   	  	 "trainingDays" -> default(number(min = 0, max = 366), 5),
   	  	 "adminDays"    -> default(number(min = 0, max = 366), 5),
   	  	 "benchDays"    -> default(number(min = 0, max = 366), 15)
-  	  )(TimeForm.apply)(TimeForm.unapply) verifying ("hours per day not valid", fields =>
+  	  )(PerYearCalculation.apply)(PerYearCalculation.unapply) verifying ("hours per day not valid", fields =>
   	  		fields match {
   	  			case data => data.hoursPerDay < BigDecimal(24) && data.hoursPerDay > BigDecimal(0)
   	  		}
@@ -42,14 +51,14 @@ class TimeController extends Controller {
 
   def hoursPerYear = Action {  implicit request =>
     Ok(views.html.time.hoursPerYear(
-      timeForm.fill( TimeForm(
-            hoursPerDay  = BigDecimal("8").setScale(2),
-            holidays     = 5,
+      perYearCalculation.fill( PerYearCalculation(
+            hoursPerDay  = BigDecimal("8").setScale(0),
+            holidays     = 25,
             bankHolidays = 9,
             sickDays     = 4,
             trainingDays = 5,
             adminDays    = 5,
-            benchDays    = 15 ))))
+            benchDays    = 15 )), None))
   }
 
   def redirectHoursPerYear = Action {
@@ -58,15 +67,14 @@ class TimeController extends Controller {
 
   def calculateHoursPerYear = Action { implicit request =>
 
-	 timeForm.bindFromRequest.fold(
+	 perYearCalculation.bindFromRequest.fold(
         errors => {
             Logger.warn("hoursPerYear failed: " + errors)
-            BadRequest(views.html.time.hoursPerYear(errors))
+            BadRequest(views.html.time.hoursPerYear(errors,None))
         },
-        times => {
-          // todo
-    			Ok(views.html.time.hoursPerYear(timeForm.fill(times)))
-        }
+        calculation =>
+    			Ok(views.html.time.hoursPerYear(
+            perYearCalculation.fill(calculation),Some(calculation)))
     )
   }
 

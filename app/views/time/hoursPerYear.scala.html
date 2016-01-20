@@ -1,6 +1,21 @@
-@(hoursForm: Form[TimeForm])
+@(hoursForm: Form[PerYearCalculation], perYearCalculation: Option[PerYearCalculation])
 
 @import helper._
+
+@calculationRow(calculation: PerYear) = {
+    <tr>
+        <th>Hours</th>
+        <th>Days</th>
+        <th>Weeks</th>
+        <th>% of year</th>
+    </tr>
+   <tr>
+     <td>@{calculation.hours}</td>
+     <td>@{calculation.days}</td>
+     <td>@{calculation.weeks}</td>
+     <td>@{calculation.percentage}</td>
+   </tr>
+}
 
 @main("Hours per year") {
 
@@ -28,84 +43,58 @@
     while in Norway it is around 1400 hours.
 </p>
 
-@**
-<table>
-    <tr>
-        <th colspan="4" title="Includes holidays">Optimistic</th>
-    </tr>
-    <tr>
-        <td colspan="4">Includes just public holidays</td>
-    </tr>
-    <tr>
-        <th>Hours</th>
-        <th>Days</th>
-        <th>Weeks</th>
-        <th>% of year</th>
-    </tr>
-    <tr>
-        <td>${optimisticHoursPerYear?:'?'}</td>
-        <td>${optimisticDaysPerYear?:'?'}</td>
-        <td>${optimisticWeeksPerYear?:'?'}</td>
-        <td>${optimisticPercentOfYear?:'?'}</td>
-    </tr>
-</table>
-<br/>
-<table>
-    <tr>
-        <th colspan="4" title="Includes training, admin and sick days">Realistic</th>
-    </tr>
-    <tr>
-        <td colspan="4">Includes holidays, training and admin</td>
-    </tr>
-    <tr>
-        <th>Hours</th>
-        <th>Days</th>
-        <th>Weeks</th>
-        <th>% of year</th>
-    </tr>
-    <tr>
-        <td>${realisticHoursPerYear?:'?'}</td>
-        <td>${realisticDaysPerYear?:'?'}</td>
-        <td>${realisticWeeksPerYear?:'?'}</td>
-        <td>${realisticPercentOfYear?:'?'}</td>
-    </tr>
-</table>
-<br/>
-<table>
-    <tr>
-        <th colspan="4" title="Includes lost utilisation">Pessimistic</th>
-    </tr>
-    <tr>
-        <td colspan="4">Includes sick days and lost utilisation</td>
-    </tr>
-    <tr>
-        <th>Hours</th>
-        <th>Days</th>
-        <th>Weeks</th>
-        <th>% of year</th>
-    </tr>
-    <tr>
-        <td>${pessimisticHoursPerYear?:'?'}</td>
-        <td>${pessimisticDaysPerYear?:'?'}</td>
-        <td>${pessimisticWeeksPerYear?:'?'}</td>
-        <td>${pessimisticPercentOfYear?:'?'}</td>
-    </tr>
-</table>
 
-<br/>
-<br/>
-**@
 
 @for(error <- hoursForm.errors){
-        <div>
-            <p class="error">
-                There was a problem with your input, please correct:<br/>
-                @error.message
-            </p>
-        </div>
-        <br/>
-        <br/>
+  <div>
+      <p class="error">
+          There was a problem with your input, please correct:<br/>
+          @error.message
+      </p>
+  </div>
+  <br/>
+  <br/>
 }
+
+
+@for(calculation <- perYearCalculation){
+<a name="calculation"></a>
+<div>
+   <table>
+       <tr>
+           <th colspan="4" title="Includes holidays">Optimistic</th>
+       </tr>
+       <tr>
+           <td colspan="4">Includes just public holidays</td>
+       </tr>
+       @calculationRow(calculation.unrealistic)
+   </table>
+   <br/>
+   <table>
+       <tr>
+           <th colspan="4" title="Includes training, admin and sick days">Realistic</th>
+       </tr>
+       <tr>
+           <td colspan="4">Includes holidays, training and admin</td>
+       </tr>
+       @calculationRow(calculation.optimistic)
+   </table>
+   <br/>
+   <table>
+       <tr>
+           <th colspan="4" title="Includes lost utilisation">Pessimistic</th>
+       </tr>
+       <tr>
+           <td colspan="4">Includes sick days and lost utilisation</td>
+       </tr>
+       @calculationRow(calculation.realistic)
+   </table>
+</div>
+
+<br/>
+<br/>
+}
+
 
 @form(action=routes.TimeController.calculateHoursPerYear){
 
@@ -116,13 +105,8 @@
     <p>
         How many hours would you work and invoice for per day.
         Not including lunch.
-        @* 1=@hoursForm.flatMap(_("hoursPerDay").value).getOrElse(7.5) <br/>
-        2=@hoursForm.map(_("hoursPerDay").value) <br/>
-        @{hoursForm match{
-            case Some(form) => "ssssss"
-            case None => "hhhh"
-        }} *@
     </p>
+    Default: 8 hours.
 </fieldset>
 
 <fieldset>
@@ -132,9 +116,8 @@
     <p>
         How many days per year (5 days = 1 week) will you
         <a href="http://en.wikipedia.org/wiki/List_of_statutory_minimum_employment_leave_by_country">take as holiday</a>?
-        <br/>
-        Default: 4 weeks = 20 days.
     </p>
+     Default: 5 weeks = 25 days. (Norwegian statuary holidays)
 </fieldset>
 
 <fieldset>
@@ -143,9 +126,9 @@
         value="@hoursForm("bankHolidays").value" />
     <p>
         How many days per year will you forced to take as holiday due to
-        <a href="http://en.wikipedia.org/wiki/List_of_holidays_by_country">public/bank holiday</a>?   <br/>
-        Default: 9 days.
+        <a href="http://en.wikipedia.org/wiki/List_of_holidays_by_country">public/bank holiday</a>?
     </p>
+     Default: 9 days. (UK bank holidays)
 </fieldset>
 
 <fieldset>
@@ -154,9 +137,9 @@
         value="@hoursForm("sickDays").value" />
     <p>
         In a bad year how many days were you off sick?
-        How many times was your kids sick and you had to take the day off work (if applicable) etc.    <br/>
-        Default: 4 days.
+        How many times was your kids sick and you had to take the day off work (if applicable) etc.
     </p>
+     Default: 4 days.
 </fieldset>
 
 <fieldset>
@@ -166,9 +149,8 @@
     <p>
         How many days will you spend on training courses etc?
         1 week's course per year? 2 days conferences?
-        <br/>
-        Default: 1 week = 5 days.
     </p>
+     Default: 1 week = 5 days.
 </fieldset>
 
 <fieldset>
@@ -185,9 +167,8 @@
     <p>
         You will also need to allocate some time to find the next contract,
         for interviews, keep previous clients happy etc.
-        <br/>
-        Default: 1 week = 5 days.
     </p>
+     Default: 1 week = 5 days.
 </fieldset>
 
 <fieldset>
@@ -201,7 +182,6 @@
         Also some times there can be longer gaps due to market reasons,
         or down periods in the year (summer, December).
     </p>
-    <br/>
     Default: 3 weeks = 15 days.
 </fieldset>
 
@@ -212,8 +192,8 @@
 
 }
 
-<br/>
 
+<br/>
 
 <p>
     <a href="@routes.Application.contact">Any questions</a>?
