@@ -1,0 +1,22 @@
+@()(adsense: Option[Adsense])
+
+<div class="compartment">
+   <div class="ad">
+@adsense match {
+   case Some(adsenseFound) => {
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- contract calc skyscraper -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:160px;height:600px"
+     data-ad-client="@{adsenseFound.client}"
+     data-ad-slot="@{adsenseFound.slot}"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+   }
+   case None => {
+       <img src="http://flurdy.com/docs/nautical/grid-v3/images/wideskyscraper.gif" alt=""/>
+   }
+}
+   </div>
+</div>

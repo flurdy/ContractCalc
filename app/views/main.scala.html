@@ -10,7 +10,7 @@
         <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/ship.css")">
         <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/cargo.css")">
         <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
-        @* TODO reintroduce analytics *@
+        @AnalyticsHelper.analyticsTemplate
     </head>
 <body>
 <div id="ocean" class="structure">
@@ -20,7 +20,7 @@
             <div id="vaka" class="structure">
                <div id="bow" class="structure">
                	<a href="http://github.com/flurdy/ContractCalc"><img alt="Fork me on github" src="@routes.Assets.at("images/ForkMe_Blk.png")" /></a>
-                  <h1>Calculate contract rate</h1>
+                  <h1><a href="@routes.Application.index">Calculate contract rate</a></h1>
                </div>
                <div id="lookout" class="structure">
                   <ul>
@@ -54,11 +54,7 @@
          </div>
       </div>
       <div id="ama" class="structure">
-         <div class="compartment">
-           	<div class="ad">
-              <img src="http://flurdy.com/docs/nautical/grid-v3/images/wideskyscraper.gif" alt=""/>
-           	</div>
-         </div>
+        @AdsenseHelper.adsenseTemplate
       </div>
    </div>
 </div>

@@ -6,6 +6,36 @@ import play.api.data._
 import play.api.data.Forms._
 import views._
 import models._
+import play.api.Play.current
+
+trait ConfigurationHelper {
+
+  def getConfigurationString(key: String): Option[String] = Play.configuration.getString(key)
+
+}
+
+
+object AnalyticsHelper extends Controller with ConfigurationHelper {
+
+    implicit val analyticsId: Option[Analytics] = getConfigurationString("analytics.id").map( Analytics(_))
+
+    def analyticsTemplate = html.analytics()(analyticsId)
+
+}
+
+object AdsenseHelper extends Controller with ConfigurationHelper {
+
+    implicit val adsenseDetails: Option[Adsense] = {
+      for {
+        client <- getConfigurationString("adsense.client")
+        slot   <- getConfigurationString("adsense.skyscraper.slot")
+      } yield Adsense(client,slot)
+    }
+
+    def adsenseTemplate = html.adsense.skyscraper()(adsenseDetails)
+
+}
+
 
 class Application extends Controller {
 

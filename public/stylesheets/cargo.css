@@ -13,6 +13,8 @@ a,a:visited{ color: black; }
 }
 #bow img { float: left; width: 5.5em; margin-left: -0em; margin-top: -1.25em; }
 #bow h1 { padding: 0 2em 0 0; }
+#bow h1 a { text-decoration: none; }
+#bow h1 a:hover { text-decoration: underline; }
 
 #lookout {
     padding: 0px 1em;
