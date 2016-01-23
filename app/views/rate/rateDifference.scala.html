@@ -1,4 +1,4 @@
-@(rateForm: Form[CalculateRateDifferenceForm])
+@(rateForm: Form[RateDifferenceCalculator], rateDifferenceCalculator: Option[RateDifferenceCalculator])
 
 @import helper._
 
@@ -20,34 +20,35 @@
 
 
 <br/>
-@**
-<table>
-    <tr>
-        <th colspan="5">Estimated annual revenue</th>
-    </tr>
-    <tr>
-        <th>Time period</th>
-        <th>Rate 1</th>
-        <th>Rate 2</th>
-        <th>Difference</th>
-        <th>Notes</th>
-    </tr>
-    <tr>
-        <th>Per year</th>
-        <td>${annualRate1?:'?'}</td>
-        <td>${annualRate2?:'?'}</td>
-        <td>${annualRateDifference?:'?'}</td>
-        <td></td>
-    </tr>
-    <tr>
-        <th>Per month</th>
-        <td>${monthRate1?:'?'}</td>
-        <td>${monthRate2?:'?'}</td>
-        <td>${monthRateDifference?:'?'}</td>
-        <td><i>Bench time ignored</i></td>
-    </tr>
-</table>
-**@
+
+@for(calculation <- rateDifferenceCalculator){
+    <table>
+        <tr>
+            <th colspan="5">Estimated annual revenue</th>
+        </tr>
+        <tr>
+            <th>Time period</th>
+            <th>Rate 1</th>
+            <th>Rate 2</th>
+            <th>Difference</th>
+            <th>Notes</th>
+        </tr>
+        <tr>
+            <th>Per year</th>
+            <td>@{calculation.lower.formatted}</td>
+            <td>@{calculation.higher.formatted}</td>
+            <td>@{calculation.difference.formatted}</td>
+            <td></td>
+        </tr>
+        <tr>
+            <th>Per month</th>
+            <td>@{calculation.lower.monthly.formatted}</td>
+            <td>@{calculation.higher.monthly.formatted}</td>
+            <td>@{calculation.monthlyDifference.formatted}</td>
+            <td><i>Bench time ignored</i></td>
+        </tr>
+    </table>
+}
 
 <br/>
 @for(error <- rateForm.errors){
@@ -55,7 +56,7 @@
         <div>
             <p class="error">
                 There was a problem with your input, please correct:<br/>
-                @error.message
+                @error.message: @error.key
             </p>
         </div>
         <br/>
@@ -66,7 +67,7 @@
 
     <fieldset>
         <legend>Hours per year</legend>
-        <input type="text" name="hoursPerYear"
+        <input type="number" name="hoursPerYear" required
             value="@rateForm("hoursPerYear").value.getOrElse(1600)"
             maxlength="5" size="4" />
         <label>hours</label>
@@ -77,7 +78,7 @@
 
     <fieldset>
         <legend>Hour per day</legend>
-        <input type="text" name="hoursPerDay"
+        <input type="text" name="hoursPerDay" required
             value="@rateForm("hoursPerDay").value.getOrElse(7.5)"
             maxlength="5" size="4" />
         <label>hours</label>
@@ -89,8 +90,8 @@
 
     <fieldset>
         <legend>Rate 1</legend>
-        <input type="text" name="rate1"
-            value="@rateForm("rate1").value.getOrElse(400)"
+        <input type="number" name="rateOne" required
+            value="@rateForm("rateOne").value.getOrElse(400)"
             maxlength="12" size="6" />
         <label></label>
         <p>
@@ -99,8 +100,8 @@
     </fieldset>
     <fieldset>
         <legend>Rate 2</legend>
-        <input type="text" name="rate2"
-            value="@rateForm("rate2").value.getOrElse(500)"
+        <input type="number" name="rateTwo" required
+            value="@rateForm("rateTwo").value.getOrElse(500)"
             maxlength="12" size="6" />
         <label></label>
         <p>
@@ -125,7 +126,7 @@
 
     <fieldset>
         <legend>Bench time</legend>
-        <input type="text" name="benchTime"
+        <input type="number" name="benchTime" 
             value="@rateForm("benchTime").value.getOrElse(0)"
             maxlength="4" size="4" />
         <label> days</label>

@@ -63,11 +63,6 @@ class TimeController extends Controller {
 }
 
 
-case class CalculateRateDifferenceForm(
-        hoursPerYear: Int, hoursPerDay: BigDecimal,
-        rateOne: Int, rateTwo: Int, rateLength: RateLength, benchTime: Int)
-
-
 class RateController extends Controller {
 
   val calculateRateForm = Form(
@@ -144,32 +139,38 @@ class RateController extends Controller {
   val calculateRateDifferenceForm = Form(
     mapping(
       "hoursPerYear" -> default(number(min=0,max=3000), 1600),
-      "hoursPerDay"  ->  default(bigDecimal, BigDecimal("7.5").setScale(1)),
-      "rateOne"      -> default(number(min=0), 400),
-      "rateTwo"      -> default(number(min=0), 500),
+      "hoursPerDay"  -> default(bigDecimal, BigDecimal("7.5").setScale(1)),
+      "rateOne"      -> number(min=0),
+      "rateTwo"      -> number(min=0),
       "rate-length"  -> mapping(
           "rate-length" -> default(nonEmptyText, "day")
         )(RateLength.apply)(RateLength.unapply),
       "benchTime"    -> default(number(min=0,max=365), 0)
-      )(CalculateRateDifferenceForm.apply)(CalculateRateDifferenceForm.unapply)
+      )(RateDifferenceCalculator.apply)(RateDifferenceCalculator.unapply)
     )
 
   def showRateDifference = Action {
     Ok(views.html.rate.rateDifference(calculateRateDifferenceForm.fill(
-        CalculateRateDifferenceForm(
-        hoursPerYear = 1600, hoursPerDay = BigDecimal("8").setScale(1),
-        rateOne = 400, rateTwo = 500, rateLength = RatePerDay, benchTime = 0
-
-    ))))
+        RateDifferenceCalculator(
+          hoursPerYear = 1600,
+          hoursPerDay = BigDecimal("8").setScale(1),
+          rateOne = 400,
+          rateTwo = 500,
+          rateLength = RatePerDay,
+          benchTime = 0
+        ) ), None ) )
   }
 
   def redirectRateDifference = Action {
     Redirect(routes.RateController.showRateDifference)
   }
 
-  def calculateRateDifference = Action {
-    // todo
-    Redirect(routes.RateController.showRateDifference)
+  def calculateRateDifference = Action { implicit request =>
+    calculateRateDifferenceForm.bindFromRequest.fold(
+      errors => BadRequest(views.html.rate.rateDifference(errors,None)),
+      calculation => Ok(views.html.rate.rateDifference(
+                          calculateRateDifferenceForm.fill(calculation),Some(calculation)))
+    )
   }
 
 }

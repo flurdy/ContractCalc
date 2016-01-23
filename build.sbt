@@ -16,6 +16,4 @@ libraryDependencies ++= Seq(
   "org.webjars" % "jquery" % "2.1.4"
 )
 
-// resolvers += "scalaz-bintray" at "http://dl.bintray.com/scalaz/releases"
-
 routesGenerator := InjectedRoutesGenerator

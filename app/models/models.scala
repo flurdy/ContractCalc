@@ -79,14 +79,14 @@ case class IncomeCalculator( rate: Int, rateLength: RateLength,
    require(chargeUnitsPerYear >= 0, "ChargeUnitsPerYear can not be negative")
    require(utilisation <= 100, "Utilisation can not be more than 100")
 
+   val costWeight = if(cost == 0) 1 else 1 - (cost.toDouble / 100)
+   val utilWeight = if(utilisation == 0) 0 else utilisation.toDouble / 100
+
    trait YearlyIncome {
       def income: BigDecimal
       lazy val formatted = IntegerFormatter.formatter.format( income )
       def rounded(value: BigDecimal) = value.setScale(0,BigDecimal.RoundingMode.HALF_UP)
    }
-
-   val costWeight = if(cost == 0) 1 else 1 - (cost.toDouble / 100)
-   val utilWeight = if(utilisation == 0) 0 else utilisation.toDouble / 100
 
    val yearlyIncome = new YearlyIncome {
       private val maxIncome = BigDecimal(1) * rate * chargeUnitsPerYear
@@ -99,5 +99,35 @@ case class IncomeCalculator( rate: Int, rateLength: RateLength,
          }
       }
    }
+}
 
+
+case class IncomeValue(rawIncome: BigDecimal){
+   val income: BigDecimal = rounded(rawIncome)
+   lazy val formatted = IntegerFormatter.formatter.format( income )
+   def rounded(value: BigDecimal) = value.setScale(0,BigDecimal.RoundingMode.HALF_UP)
+}
+
+
+case class AnnualRate(rate: Int, rateLength: RateLength, daysPerYear: BigDecimal, hoursPerDay: BigDecimal){
+   val ratePerDay = (rateLength != RatePerDay).fold[BigDecimal](rate)(_ * hoursPerDay)
+   val annual     = IncomeValue(ratePerDay * daysPerYear)
+   val monthly    = IncomeValue(annual.income / 12)
+   val formatted  = annual.formatted
+}
+
+case class RateDifferenceCalculator(
+        hoursPerYear: Int, hoursPerDay: BigDecimal,
+        rateOne: Int, rateTwo: Int, rateLength: RateLength, benchTime: Int){
+
+   require(benchTime >= 0, "BenchTime can not be negative")
+
+   private val (lowerRate,higherRate) = if (rateOne <= rateTwo) (rateOne,rateTwo) else (rateTwo,rateOne)
+
+   private val daysPerYear = hoursPerYear / hoursPerDay
+   val lower      = AnnualRate(lowerRate, rateLength, daysPerYear, hoursPerDay)
+   val higher     = AnnualRate(higherRate, rateLength, daysPerYear - benchTime, hoursPerDay)
+   val difference = IncomeValue( higher.annual.income - lower.annual.income )
+   private val higherUnbenched = AnnualRate(higherRate, rateLength, daysPerYear, hoursPerDay)
+   val monthlyDifference = IncomeValue( higherUnbenched.monthly.income - lower.monthly.income )
 }

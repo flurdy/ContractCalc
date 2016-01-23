@@ -9,12 +9,12 @@ import org.mockito.Mockito._
 class IncomeCalculatorSpec extends PlaySpec {
 
    trait Setup {
-      lazy val incomeCalculator = IncomeCalculator(
-          rate = 400,
-          rateLength = RatePerDay,
-          chargeUnitsPerYear = 200,
-          cost = 0,
-          utilisation = 100 )
+     lazy val incomeCalculator = IncomeCalculator(
+       rate = 400,
+       rateLength = RatePerDay,
+       chargeUnitsPerYear = 200,
+       cost = 0,
+       utilisation = 100 )
    }
 
    "IncomeCalculator" should {
