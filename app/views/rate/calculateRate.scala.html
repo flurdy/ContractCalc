@@ -1,4 +1,4 @@
-@(rateForm: Form[CalculateRateForm])
+@(rateForm: Form[RateCalculator], rateCalculator: Option[RateCalculator])
 
 @import helper._
 
@@ -16,62 +16,61 @@
         <div>
             <p class="error">
                 There was a problem with your input, please correct:<br/>
-                @error.message
+                @error.message : @error.key
             </p>
         </div>
         <br/>
 }
 
-@**
-#{if hourlyRate}
+
+@for(calculation <- rateCalculator){
+<div>
 <table>
     <tr>
         <th>Hourly rate</th>
-        <td colspan="2" class="righter">${hourlyRate}</td>
+        <td colspan="2" class="righter">@{calculation.hourly}</td>
         <td colspan="1"><i>((Salary * cost * tax) / yearlyHours) / utilisation</i></td>
     </tr>
     <tr>
         <th>Year invoice</th>
-        <td colspan="2" class="righter">${yearIncome}</td>
+        <td colspan="2" class="righter">@{calculation.yearlyFormatted}</td>
         <td colspan="1"><i>(Salary * cost * tax) / utilisation</i></td>
     </tr>
     <tr>
         <th rowspan="3">Daily rates</th>
         <td class="righter">7 hours</td>
-        <td>${dailyRates.get("7")}</td>
+        <td>@{calculation.dailyFormatted(7)}</td>
         <td colspan="1" rowspan="3" title="Very naive, normally you charge the same per day and increase per hour if shorter days instead"><i>hourlyRate * dailyHours (na&iuml;ve)</i></td>
     </tr>
     <tr>
         <td class="righter">7.5 hours</td>
-        <td>${dailyRates.get("7.5")}</td>
+        <td>@{calculation.dailyFormatted(7.5)}</td>
     </tr>
     <tr>
         <td class="righter">8 hours</td>
-        <td>${dailyRates.get("8")}</td>
+        <td>@{calculation.dailyFormatted(8)}</td>
     </tr>
 </table>
+</div>
 <br/>
 <br/>
-#{/if}
-**@
+}
 
 @form(action=routes.RateController.calculateRateFromIncome){
 
 <fieldset>
     <legend>Salary</legend>
-    <input type="text" name="salary"
-        value="@rateForm("salary").value.getOrElse(50000)"
-        maxlength="12" size="8"/>
+    <input type="number" name="salary" maxlength="12" size="8"
+        value="@rateForm("salary").value.getOrElse(50000)" />
     <label>(currency irrelevant)</label>
     <p>How much would your earn as an employee per year before tax.</p>
 </fieldset>
 <fieldset>
     <legend>Hours per year</legend>
 
-    <input type="text" id="hoursYear" name="hoursYear"
-        value="@rateForm("hoursPerYear").value.getOrElse(1600)"
-        maxlength="5" size="4" />
-    <label for="hoursYear">hours</label>
+    <input type="number" id="hoursPerYear" name="hoursPerYear" maxlength="5" size="4"
+        value="@rateForm("hoursPerYear").value.getOrElse(1600)" />
+    <label for="hoursPerYear">hours</label>
 
     <br/>
 
@@ -99,9 +98,8 @@
 </fieldset> -->
 <fieldset>
     <legend>Additional cost</legend>
-    <input type="text" name="cost"
-        value="@rateForm("cost").value.getOrElse(30)"
-        maxlength="3" size="4" />
+    <input type="number" name="cost" maxlength="3" size="4"
+        value="@rateForm("cost").value.getOrElse(30)" />
     <label>%</label>
     <p>
         0 indicates no additional cost. Default: 30% means 30% additional costs.
@@ -129,9 +127,8 @@
 </fieldset>
 <fieldset>
     <legend>Utilisation</legend>
-    <input type="text" name="utilisation"
-        value="@rateForm("utilisation").value.getOrElse(90)"
-        maxlength="3" size="4" />
+    <input type="number" name="utilisation" maxlength="3" size="4"
+        value="@rateForm("utilisation").value.getOrElse(90)" />
     <label>%</label>
     <p>
         100% indicates full utilisation. Default: 90% utilisation, ie. you loose 10% of your income.
@@ -148,9 +145,8 @@
 </fieldset>
 <fieldset>
     <legend>Tax difference</legend>
-    <input type="text" name="tax"
-        value="@rateForm("tax").value.getOrElse(0)"
-        maxlength="3" size="4" />
+    <input type="number" name="tax" maxlength="3" size="4"
+        value="@rateForm("tax").value.getOrElse(0)" />
     <label>%</label>
     <p>
         10 means 10% more tax, -20 means 20% less tax, ie earn 20% more. Default: 0 means no difference.
@@ -165,9 +161,8 @@
 </fieldset>
 <fieldset>
     <legend>Risk factor</legend>
-    <input type="text" name="risk"
-        value="@rateForm("risk").value.getOrElse(0)"
-        maxlength="3" size="4" />
+    <input type="number" name="risk" maxlength="3" size="4"
+        value="@rateForm("risk").value.getOrElse(0)" />
     <label>%</label>
     <p>
         20 means 20% higher rate to accept contracting risk.

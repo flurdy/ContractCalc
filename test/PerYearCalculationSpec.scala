@@ -5,7 +5,6 @@ import play.api.test.Helpers._
 import org.scalatest._
 import org.scalatest.mock.MockitoSugar
 import org.mockito.Mockito._
-import controllers.PerYearCalculation
 
 class PerYearCalculationSpec extends PlaySpec {
 

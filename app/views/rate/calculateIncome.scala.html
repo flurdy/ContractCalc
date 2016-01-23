@@ -1,4 +1,4 @@
-@(rateForm: Form[CalculateIncomeForm])
+@(rateForm: Form[IncomeCalculator], incomeCalculator: Option[IncomeCalculator])
 
 @import helper._
 
@@ -28,8 +28,7 @@
 		<br/>
 }
 
-@**
-#{if grossIncome || realisticIncome || comparableIncome}
+@for(calculation <- incomeCalculator){
 	<h4>Calculated income</h4>
 
 	<table>
@@ -38,38 +37,31 @@
 				<th>Income</th>
 				<th>&nbsp;</th>
 			</tr>
-	#{if grossIncome}
 			<tr>
-				<td class="income">${grossIncome}</td>
+				<td class="income">@{calculation.yearlyIncome.formatted}</td>
 				<td>Gross maximum income</td>
 			</tr>
-	#{/if}
-	#{if realisticIncome}
 			<tr>
-				<td class="income">${realisticIncome}</td>
+				<td class="income">@{calculation.yearlyIncome.withUtilisation.formatted}</td>
 				<td>Realistic income with reduced utilisation</td>
 			</tr>
-	#{/if}
-	#{if comparableIncome}
 			<tr>
-				<td class="income">${comparableIncome}</td>
+				<td class="income">@{calculation.yearlyIncome.withUtilisation.withCost.formatted}</td>
 				<td>
 					Income which includes increased cost level.<br/>
 					This is comparable to permanent salaries not considering risk factor.
 				</td>
 			</tr>
-	#{/if}
 		</tbody>
 	</table>
 	<p>
-		Note these do not include tax etc.
+		Note these do not include taxes etc.
 	</p>
-<br/>
-<br/>
-#{/if}
-**@
+   <br/>
+   <br/>
+}
 
-@form(action=routes.RateController.showEnterRateToCalculateIncome){
+@form(action=routes.RateController.calculateIncomeFromRate){
 
 <fieldset>
 	<legend>Rate</legend>
